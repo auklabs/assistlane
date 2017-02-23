@@ -11,6 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.auklabs.assistlane.repository.FaqCategoryRepository;
+import com.auklabs.assistlane.service.FaqCategoryService;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AssistlaneAppApplicationTests {
@@ -19,6 +22,12 @@ public class AssistlaneAppApplicationTests {
 	
 	@Autowired
 	protected WebApplicationContext context;
+	
+	@Autowired
+	protected FaqCategoryRepository faqCategoryRepository;
+	
+	@Autowired
+	protected FaqCategoryService faqCategoryService;
 	
 	@Before
 	public void setUp() {

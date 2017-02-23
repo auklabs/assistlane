@@ -2,6 +2,8 @@ package com.auklabs.assistlane.domain;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -13,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import com.auklabs.assistlane.repository.event.AbstractEntityListener;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,8 +39,10 @@ public class FaqArticle extends AbstractEntity {
     @CollectionTable(name = "keyword", joinColumns = { @JoinColumn(name = "id") })
     private Set<String> keywords = new HashSet<String>();
 	
-	@ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "faqRelatedArticles", joinColumns = { @JoinColumn(name = "id") })
+	//@ElementCollection(fetch = FetchType.EAGER)
+    //@CollectionTable(name = "faqRelatedArticles", joinColumns = { @JoinColumn(name = "id") })
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<FaqArticle> faqRelatedArticles = new HashSet<FaqArticle>();
 	
 	@Column(name ="publish")
@@ -44,5 +50,4 @@ public class FaqArticle extends AbstractEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private FaqCategory faqCategory;
-
 }

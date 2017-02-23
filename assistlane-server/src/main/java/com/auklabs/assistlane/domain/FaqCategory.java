@@ -11,17 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
 import com.auklabs.assistlane.repository.event.AbstractEntityListener;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Data
 @Entity
-@EqualsAndHashCode(callSuper = false, exclude = { "faqCategory" })
-@ToString(exclude = { "faqCategory" })
+@EqualsAndHashCode(callSuper = false)
 @EntityListeners({ AbstractEntityListener.class })
 public class FaqCategory extends AbstractEntity {
 
@@ -35,6 +31,5 @@ public class FaqCategory extends AbstractEntity {
 	private String summary;
 
 	@OneToMany(mappedBy = "faqCategory", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<FaqArticle> faqCategory = new HashSet<FaqArticle>();
-
+	private Set<FaqArticle> faqArticle = new HashSet<FaqArticle>();
 }

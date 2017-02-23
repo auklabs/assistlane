@@ -7,38 +7,36 @@ import com.auklabs.assistlane.domain.FaqArticle;
 import com.auklabs.assistlane.domain.FaqCategory;
 import com.auklabs.assistlane.dto.models.FaqArticleDTO;
 import com.auklabs.assistlane.dto.models.FaqCategoryDTO;
-import com.auklabs.assistlane.dto.models.FaqDTO;
 
 @Service
 public class DTOToDomainConverstionService {
 
-	/*public Faq convertFAQ(FaqDTO faqDTO) {
+	public FaqCategory convertFAQCategory(FaqCategoryDTO faqCategoryDTO) {
 		
-		Faq faq = new Faq();
-		Set<FaqCategory> faqCategorieList = new HashSet<FaqCategory>();
-
-		for (FaqCategoryDTO faqCategoryDTO : faqDTO.getFaqCategory()) {
-			Set<FaqArticle> faqArticleList = new HashSet<FaqArticle>();
-			FaqCategory faqCategory = new FaqCategory();
-			faqCategory.setDisplayName(faqCategoryDTO.getDisplayName());
-			faqCategory.setSummary(faqCategoryDTO.getSummary());
-			faqCategory.setFaq(faq);
-			for (FaqArticleDTO faqArticleDTO : faqCategoryDTO.getFaqArticleDTO()) {
-				FaqArticle faqArticle = new FaqArticle();
-				faqArticle.setBody(faqArticleDTO.getBody());
-				faqArticle.setIsPublish(faqArticleDTO.getIsPublish());
-				faqArticle.setFaqRelatedItem(faqArticleDTO.getFaqRelatedItem());
-				faqArticle.setKeyword(faqArticleDTO.getKeyword());
-				faqArticle.setFaqCategory(faqCategory);
-				faqArticleList.add(faqArticle);
+		FaqCategory faqCategory = new FaqCategory();
+		Set<FaqArticleDTO> faqArticleDTOs = faqCategoryDTO.getFaqArticleDTO();
+		Set<FaqArticle> faqArticles = new HashSet<FaqArticle>();
+		for (FaqArticleDTO faqArticleDTO : faqArticleDTOs) {
+			FaqArticle faqArticle = new FaqArticle();
+			faqArticle.setBody(faqArticleDTO.getBody());
+			faqArticle.setPublish(faqArticleDTO.getPublish());
+			faqArticle.setKeywords(faqArticleDTO.getKeywords());
+			faqArticle.setFaqCategory(faqCategory);
+			Set<FaqArticle> subfaqArticles = new HashSet<FaqArticle>();
+			for (FaqArticleDTO subfaqArticleDTO : faqArticleDTO.getFaqRelatedArticles()) {
+				FaqArticle subfaqArticle = new FaqArticle();
+				subfaqArticle.setBody(subfaqArticleDTO.getBody());
+				subfaqArticle.setPublish(subfaqArticleDTO.getPublish());
+				subfaqArticle.setKeywords(subfaqArticleDTO.getKeywords());
+				subfaqArticle.setFaqCategory(faqCategory);
+				subfaqArticles.add(subfaqArticle);
 			}
-
-			faqCategory.setFaqCategory(faqArticleList);
-			faqCategorieList.add(faqCategory);
+			faqArticle.setFaqRelatedArticles(subfaqArticles);
+			faqArticles.add(faqArticle);
 		}
-
-		faq.setFaqCategory(faqCategorieList);
-		return faq;
+		faqCategory.setDisplayName(faqCategoryDTO.getDisplayName());
+		faqCategory.setSummary(faqCategoryDTO.getSummary());
+		faqCategory.setFaqArticle(faqArticles);
+		return faqCategory;
 	}
-*/
 }

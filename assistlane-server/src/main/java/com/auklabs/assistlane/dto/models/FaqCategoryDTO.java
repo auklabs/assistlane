@@ -16,5 +16,5 @@ public class FaqCategoryDTO implements Serializable{
 	
 	private String summary;
 	
-	//private Set<FaqArticleDTO> faqArticleDTO = new HashSet<FaqArticleDTO>();
+	private Set<FaqArticleDTO> faqArticleDTO = new HashSet<FaqArticleDTO>();
 }
