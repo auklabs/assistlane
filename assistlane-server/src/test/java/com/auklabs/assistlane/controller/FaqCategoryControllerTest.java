@@ -81,6 +81,61 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 	}
 	
 	@Test
+	public void getFaqCategory() throws Exception{
+		
+		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
+		faqArticleDTO2.setBody("Article2");
+		faqArticleDTO2.setPublish(false);
+		Set<String> keywords2 = new HashSet<String>();
+		keywords2.add("Java2");
+		keywords2.add("login2");
+		faqArticleDTO2.setKeywords(keywords2);
+		Set<FaqArticleDTO> faqArticleDTOs2 = new HashSet<FaqArticleDTO>();
+		faqArticleDTO2.setFaqRelatedArticles(faqArticleDTOs2);
+		
+		
+		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
+		faqArticleDTO3.setBody("Article3");
+		faqArticleDTO3.setPublish(false);
+		Set<String> keywords3 = new HashSet<String>();
+		keywords3.add("Java3");
+		keywords3.add("login3");
+		faqArticleDTO3.setKeywords(keywords3);
+		Set<FaqArticleDTO> faqArticleDTOs3 = new HashSet<FaqArticleDTO>();
+		faqArticleDTO3.setFaqRelatedArticles(faqArticleDTOs3);
+		
+		
+		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
+		faqArticleDTO1.setBody("Article1");
+		faqArticleDTO1.setPublish(false);
+		Set<String> keywords1 = new HashSet<String>();
+		keywords1.add("Java1");
+		keywords1.add("login1");
+		faqArticleDTO1.setKeywords(keywords1);
+		
+		Set<FaqArticleDTO> faqArticleDTOs1 = new HashSet<FaqArticleDTO>();
+		faqArticleDTOs1.add(faqArticleDTO2);
+		faqArticleDTOs1.add(faqArticleDTO3);
+		faqArticleDTO1.setFaqRelatedArticles(faqArticleDTOs1);
+		
+		Set<FaqArticleDTO> faqArticleDTOs = new HashSet<FaqArticleDTO>();
+		faqArticleDTOs.add(faqArticleDTO1);
+		
+		FaqCategoryDTO faqCategoryDTO = new FaqCategoryDTO();
+		faqCategoryDTO.setDisplayName("Sales");
+		faqCategoryDTO.setSummary("It belongs To Sales Department");
+		faqCategoryDTO.setFaqArticleDTO(faqArticleDTOs);
+		
+		FaqCategory faqCategory = faqCategoryService.createFaqCategory(faqCategoryDTO);
+		
+		Long id = faqCategory.getId();
+		mockMvc.perform(get("/api/v1/category/getCategory/{id}", id))
+		.andExpect(status().isOk()).andDo(print());
+	}
+	
+	
+	
+	@Test
 	public void getAllFaqCategory() throws Exception{
 		
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
@@ -131,7 +186,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		mockMvc.perform(get("/api/v1/category/getAllCategory")).andExpect(status().isOk()).andDo(print());
 	}
 	
-	
+	@Test
 	public void deleteFaqCategory() throws Exception{
 		
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
@@ -184,5 +239,57 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		.andExpect(status().isNoContent()).andDo(print());
 	}
 	
+	@Test
+	public void deleteAllFaqCategory() throws Exception{
+		
+		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
+		faqArticleDTO2.setBody("Article2");
+		faqArticleDTO2.setPublish(false);
+		Set<String> keywords2 = new HashSet<String>();
+		keywords2.add("Java2");
+		keywords2.add("login2");
+		faqArticleDTO2.setKeywords(keywords2);
+		Set<FaqArticleDTO> faqArticleDTOs2 = new HashSet<FaqArticleDTO>();
+		faqArticleDTO2.setFaqRelatedArticles(faqArticleDTOs2);
+		
+		
+		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
+		faqArticleDTO3.setBody("Article3");
+		faqArticleDTO3.setPublish(false);
+		Set<String> keywords3 = new HashSet<String>();
+		keywords3.add("Java3");
+		keywords3.add("login3");
+		faqArticleDTO3.setKeywords(keywords3);
+		Set<FaqArticleDTO> faqArticleDTOs3 = new HashSet<FaqArticleDTO>();
+		faqArticleDTO3.setFaqRelatedArticles(faqArticleDTOs3);
+		
+		
+		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
+		faqArticleDTO1.setBody("Article1");
+		faqArticleDTO1.setPublish(false);
+		Set<String> keywords1 = new HashSet<String>();
+		keywords1.add("Java1");
+		keywords1.add("login1");
+		faqArticleDTO1.setKeywords(keywords1);
+		
+		Set<FaqArticleDTO> faqArticleDTOs1 = new HashSet<FaqArticleDTO>();
+		faqArticleDTOs1.add(faqArticleDTO2);
+		faqArticleDTOs1.add(faqArticleDTO3);
+		faqArticleDTO1.setFaqRelatedArticles(faqArticleDTOs1);
+		
+		Set<FaqArticleDTO> faqArticleDTOs = new HashSet<FaqArticleDTO>();
+		faqArticleDTOs.add(faqArticleDTO1);
+		
+		FaqCategoryDTO faqCategoryDTO = new FaqCategoryDTO();
+		faqCategoryDTO.setDisplayName("Sales");
+		faqCategoryDTO.setSummary("It belongs To Sales Department");
+		faqCategoryDTO.setFaqArticleDTO(faqArticleDTOs);
+		
+		faqCategoryService.createFaqCategory(faqCategoryDTO);
+		faqCategoryService.createFaqCategory(faqCategoryDTO);
+		
+		mockMvc.perform(delete("/api/v1/category/delete/all"))
+		.andExpect(status().isNoContent()).andDo(print());
+	}
 	
 }

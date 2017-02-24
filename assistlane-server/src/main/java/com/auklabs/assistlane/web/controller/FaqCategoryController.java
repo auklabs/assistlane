@@ -50,6 +50,13 @@ public class FaqCategoryController {
 		return new ResponseEntity<PagedResources>(adminPagedResources, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/getCategory/{id}", method = RequestMethod.GET)
+	public ResponseEntity<FaqCategoryResource> getFaqCategory(@PathVariable Long id){
+		FaqCategory faqCategory = faqCategoryService.getById(id);
+		FaqCategoryResource rsource = faqResourseAssembler.toResource(faqCategory);
+		return  new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ResponseEntity<FaqCategoryResource> saveFaqCategory(@RequestBody FaqCategoryDTO faqCategoryDTO){
 		FaqCategory faqCategory = faqCategoryService.createFaqCategory(faqCategoryDTO);
@@ -58,8 +65,14 @@ public class FaqCategoryController {
 	}
 	
 	@RequestMapping(value = "/delete/{id}" , method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Long id){
+	public ResponseEntity<Void> deleteFaqCategory(@PathVariable Long id){
 		faqCategoryService.deleteFaqCategory(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value = "/delete/all" , method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteAllFaqCategory(){
+		faqCategoryService.deleteAllFaqCategory();
 		return ResponseEntity.noContent().build();
 	}
 }
