@@ -1,14 +1,22 @@
 package com.auklabs.assistlane.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import org.hibernate.envers.Audited;
+import com.auklabs.assistlane.enums.UserRole;
+import com.auklabs.assistlane.repository.event.AbstractEntityListener;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-public class User {
+@EqualsAndHashCode(callSuper = false)
+@EntityListeners({ AbstractEntityListener.class})
+@Audited
+public class User extends AbstractEntity{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,4 +25,7 @@ public class User {
 	private String name;
 	
 	private Boolean active;
+	
+	private String role = UserRole.ADMIN.name();
+
 }

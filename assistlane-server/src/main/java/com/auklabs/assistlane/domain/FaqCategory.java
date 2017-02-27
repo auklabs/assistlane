@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import org.hibernate.envers.Audited;
 import com.auklabs.assistlane.repository.event.AbstractEntityListener;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +19,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = false)
-@EntityListeners({ AbstractEntityListener.class })
+@EntityListeners({ AbstractEntityListener.class})
+@Audited
 public class FaqCategory extends AbstractEntity {
 
 	@Id

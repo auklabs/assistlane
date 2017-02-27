@@ -5,4 +5,5 @@ import com.auklabs.assistlane.domain.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 
+	User findByRole(String role);
 }

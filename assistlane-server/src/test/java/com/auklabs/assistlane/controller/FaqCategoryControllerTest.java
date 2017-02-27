@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.After;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import com.auklabs.assistlane.AssistlaneAppApplicationTests;
@@ -20,7 +19,7 @@ import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 
 public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 
-	@After
+	//@After
 	public void cleanup(){
 		faqCategoryRepository.deleteAll();
 	}

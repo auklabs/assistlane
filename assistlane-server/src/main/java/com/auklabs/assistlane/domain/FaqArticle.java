@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import org.hibernate.envers.Audited;
 import com.auklabs.assistlane.repository.event.AbstractEntityListener;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,8 +24,9 @@ import lombok.ToString;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = false,exclude={"faqCategory"})
-@EntityListeners({ AbstractEntityListener.class })
+@EntityListeners({ AbstractEntityListener.class})
 @ToString(exclude={"faqCategory"})
+@Audited
 public class FaqArticle extends AbstractEntity {
 	
 	@Id
