@@ -35,6 +35,7 @@ public class FaqCategoryController {
 	@Autowired
 	private PagedResourcesAssembler<FaqCategory> pagedResourcesAssembler;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/getAllCategory", method = RequestMethod.GET)
 	public ResponseEntity<PagedResources> getAllFaqCategory(Pageable pageable) {
 		Page<FaqCategory> faqCategoryPage = faqCategoryService.getAllFaqCategory(pageable);

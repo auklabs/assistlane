@@ -29,6 +29,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
 		faqArticleDTO2.setBody("Article2");
+		faqArticleDTO2.setTitle("title2");
 		faqArticleDTO2.setPublish(false);
 		Set<String> keywords2 = new HashSet<String>();
 		keywords2.add("Java2");
@@ -40,6 +41,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
 		faqArticleDTO3.setBody("Article3");
+		faqArticleDTO3.setTitle("title3");
 		faqArticleDTO3.setPublish(false);
 		Set<String> keywords3 = new HashSet<String>();
 		keywords3.add("Java3");
@@ -51,6 +53,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
 		faqArticleDTO1.setBody("Article1");
+		faqArticleDTO1.setTitle("title1");
 		faqArticleDTO1.setPublish(false);
 		Set<String> keywords1 = new HashSet<String>();
 		keywords1.add("Java1");
@@ -84,6 +87,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
 		faqArticleDTO2.setBody("Article2");
+		faqArticleDTO2.setTitle("title2");
 		faqArticleDTO2.setPublish(false);
 		Set<String> keywords2 = new HashSet<String>();
 		keywords2.add("Java2");
@@ -95,6 +99,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
 		faqArticleDTO3.setBody("Article3");
+		faqArticleDTO3.setTitle("title3");
 		faqArticleDTO3.setPublish(false);
 		Set<String> keywords3 = new HashSet<String>();
 		keywords3.add("Java3");
@@ -106,6 +111,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
 		faqArticleDTO1.setBody("Article1");
+		faqArticleDTO1.setTitle("title1");
 		faqArticleDTO1.setPublish(false);
 		Set<String> keywords1 = new HashSet<String>();
 		keywords1.add("Java1");
@@ -139,6 +145,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
 		faqArticleDTO2.setBody("Article2");
+		faqArticleDTO2.setTitle("title2");
 		faqArticleDTO2.setPublish(false);
 		Set<String> keywords2 = new HashSet<String>();
 		keywords2.add("Java2");
@@ -150,6 +157,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
 		faqArticleDTO3.setBody("Article3");
+		faqArticleDTO3.setTitle("title3");
 		faqArticleDTO3.setPublish(false);
 		Set<String> keywords3 = new HashSet<String>();
 		keywords3.add("Java3");
@@ -161,6 +169,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
 		faqArticleDTO1.setBody("Article1");
+		faqArticleDTO1.setTitle("title1");
 		faqArticleDTO1.setPublish(false);
 		Set<String> keywords1 = new HashSet<String>();
 		keywords1.add("Java1");
@@ -190,6 +199,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
 		faqArticleDTO2.setBody("Article2");
+		faqArticleDTO2.setTitle("title2");
 		faqArticleDTO2.setPublish(false);
 		Set<String> keywords2 = new HashSet<String>();
 		keywords2.add("Java2");
@@ -201,6 +211,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
 		faqArticleDTO3.setBody("Article3");
+		faqArticleDTO3.setTitle("title3");
 		faqArticleDTO3.setPublish(false);
 		Set<String> keywords3 = new HashSet<String>();
 		keywords3.add("Java3");
@@ -212,6 +223,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
 		faqArticleDTO1.setBody("Article1");
+		faqArticleDTO1.setTitle("title1");
 		faqArticleDTO1.setPublish(false);
 		Set<String> keywords1 = new HashSet<String>();
 		keywords1.add("Java1");
@@ -243,6 +255,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
 		faqArticleDTO2.setBody("Article2");
+		faqArticleDTO2.setTitle("title2");
 		faqArticleDTO2.setPublish(false);
 		Set<String> keywords2 = new HashSet<String>();
 		keywords2.add("Java2");
@@ -254,6 +267,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
 		faqArticleDTO3.setBody("Article3");
+		faqArticleDTO3.setTitle("title3");
 		faqArticleDTO3.setPublish(false);
 		Set<String> keywords3 = new HashSet<String>();
 		keywords3.add("Java3");
@@ -265,6 +279,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
 		faqArticleDTO1.setBody("Article1");
+		faqArticleDTO1.setTitle("title1");
 		faqArticleDTO1.setPublish(false);
 		Set<String> keywords1 = new HashSet<String>();
 		keywords1.add("Java1");

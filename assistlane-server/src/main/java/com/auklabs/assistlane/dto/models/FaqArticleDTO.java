@@ -14,6 +14,8 @@ public class FaqArticleDTO implements Serializable{
 	
 	private String body;
 	
+	private String title;
+	
     private Set<String> keywords = new HashSet<String>();
     
     private Set<FaqArticleDTO> faqRelatedArticles = new HashSet<FaqArticleDTO>();
