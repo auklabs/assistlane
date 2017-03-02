@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = false)
-@EntityListeners({ AbstractEntityListener.class})
+@EntityListeners({ AbstractEntityListener.class })
 @Audited
 public class FaqCategory extends AbstractEntity {
 
@@ -32,6 +32,6 @@ public class FaqCategory extends AbstractEntity {
 
 	private String summary;
 
-	@OneToMany(mappedBy = "faqCategory", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "faqCategory", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	private Set<FaqArticle> faqArticle = new HashSet<FaqArticle>();
 }

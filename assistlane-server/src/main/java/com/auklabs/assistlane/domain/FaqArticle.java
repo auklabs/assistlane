@@ -23,31 +23,28 @@ import lombok.ToString;
 
 @Data
 @Entity
-@EqualsAndHashCode(callSuper = false,exclude={"faqCategory"})
-@EntityListeners({ AbstractEntityListener.class})
-@ToString(exclude={"faqCategory"})
+@EqualsAndHashCode(callSuper = false, exclude = { "faqCategory", "keywords","faqRelatedArticles"})
+@EntityListeners({ AbstractEntityListener.class })
+@ToString(exclude = { "faqCategory", "keywords", "faqRelatedArticles"})
 @Audited
 public class FaqArticle extends AbstractEntity {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	private String body;
-	
-	@ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "keyword", joinColumns = { @JoinColumn(name = "id") })
-    private Set<String> keywords = new HashSet<String>();
-	
-	//@ElementCollection(fetch = FetchType.EAGER)
-    //@CollectionTable(name = "faqRelatedArticles", joinColumns = { @JoinColumn(name = "id") })
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<FaqArticle> faqRelatedArticles = new HashSet<FaqArticle>();
-	
-	@Column(name ="publish")
+
+	@ElementCollection(fetch = FetchType.LAZY)
+	@CollectionTable(name = "keyword", joinColumns = { @JoinColumn(name = "id") })
+	private Set<String> keywords = new HashSet<String>();
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	private Set<FaqArticle> faqRelatedArticles = new HashSet<FaqArticle>();
+
+	@Column(name = "publish")
 	private Boolean publish;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private FaqCategory faqCategory;
 }

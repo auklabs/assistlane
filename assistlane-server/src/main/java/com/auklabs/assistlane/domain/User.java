@@ -5,7 +5,6 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import org.hibernate.envers.Audited;
 import com.auklabs.assistlane.enums.UserRole;
 import com.auklabs.assistlane.repository.event.AbstractEntityListener;
 import lombok.Data;
@@ -15,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @EqualsAndHashCode(callSuper = false)
 @EntityListeners({ AbstractEntityListener.class})
-@Audited
+//@Audited // as per Discussion With TM it has to be removed
 public class User extends AbstractEntity{
 	
 	@Id
@@ -27,5 +26,4 @@ public class User extends AbstractEntity{
 	private Boolean active;
 	
 	private String role = UserRole.ADMIN.name();
-
 }

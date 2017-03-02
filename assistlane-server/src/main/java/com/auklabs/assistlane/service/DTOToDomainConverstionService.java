@@ -12,7 +12,7 @@ import com.auklabs.assistlane.dto.models.FaqCategoryDTO;
 public class DTOToDomainConverstionService {
 
 	public FaqCategory convertFAQCategory(FaqCategoryDTO faqCategoryDTO) {
-		
+
 		FaqCategory faqCategory = new FaqCategory();
 		Set<FaqArticleDTO> faqArticleDTOs = faqCategoryDTO.getFaqArticleDTO();
 		Set<FaqArticle> faqArticles = new HashSet<FaqArticle>();
@@ -38,5 +38,23 @@ public class DTOToDomainConverstionService {
 		faqCategory.setSummary(faqCategoryDTO.getSummary());
 		faqCategory.setFaqArticle(faqArticles);
 		return faqCategory;
+	}
+
+	public FaqArticle convertFaqArticle(FaqArticleDTO faqArticleDTO) {
+
+		FaqArticle faqArticle = new FaqArticle();
+		faqArticle.setBody(faqArticleDTO.getBody());
+		faqArticle.setPublish(faqArticleDTO.getPublish());
+		faqArticle.setKeywords(faqArticleDTO.getKeywords());
+		/*Set<FaqArticle> subfaqArticles = new HashSet<FaqArticle>();
+		for (FaqArticleDTO subfaqArticleDTO : faqArticleDTO.getFaqRelatedArticles()) {
+			FaqArticle subfaqArticle = new FaqArticle();
+			subfaqArticle.setBody(subfaqArticleDTO.getBody());
+			subfaqArticle.setPublish(subfaqArticleDTO.getPublish());
+			subfaqArticle.setKeywords(subfaqArticleDTO.getKeywords());
+			subfaqArticles.add(subfaqArticle);
+		}
+		faqArticle.setFaqRelatedArticles(subfaqArticles);*/
+		return faqArticle;
 	}
 }
