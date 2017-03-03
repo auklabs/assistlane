@@ -11,7 +11,9 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import com.auklabs.assistlane.AssistlaneAppApplicationTests;
 import com.auklabs.assistlane.domain.FaqArticle;
+import com.auklabs.assistlane.domain.FaqCategory;
 import com.auklabs.assistlane.dto.models.FaqArticleDTO;
+import com.auklabs.assistlane.dto.models.FaqCategoryDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
@@ -91,6 +93,63 @@ public class FaqArticleControllerTest extends AssistlaneAppApplicationTests {
 
 		mockMvc.perform(get("/faqArticles")).andExpect(status().isOk()).andDo(print());
 
+	}
+	
+	@Test
+	public void TestGetAllArticleInCategory() throws Exception{
+		
+		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
+		faqArticleDTO2.setBody("Article2");
+		faqArticleDTO2.setTitle("title2");
+		faqArticleDTO2.setPublish(false);
+		Set<String> keywords2 = new HashSet<String>();
+		keywords2.add("Java2");
+		keywords2.add("login2");
+		faqArticleDTO2.setKeywords(keywords2);
+		Set<FaqArticleDTO> faqArticleDTOs2 = new HashSet<FaqArticleDTO>();
+		faqArticleDTO2.setFaqRelatedArticles(faqArticleDTOs2);
+		
+		
+		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
+		faqArticleDTO3.setBody("Article3");
+		faqArticleDTO3.setTitle("title3");
+		faqArticleDTO3.setPublish(false);
+		Set<String> keywords3 = new HashSet<String>();
+		keywords3.add("Java3");
+		keywords3.add("login3");
+		faqArticleDTO3.setKeywords(keywords3);
+		Set<FaqArticleDTO> faqArticleDTOs3 = new HashSet<FaqArticleDTO>();
+		faqArticleDTO3.setFaqRelatedArticles(faqArticleDTOs3);
+		
+		
+		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
+		faqArticleDTO1.setBody("Article1");
+		faqArticleDTO1.setTitle("title1");
+		faqArticleDTO1.setPublish(false);
+		Set<String> keywords1 = new HashSet<String>();
+		keywords1.add("Java1");
+		keywords1.add("login1");
+		faqArticleDTO1.setKeywords(keywords1);
+		
+		Set<FaqArticleDTO> faqArticleDTOs1 = new HashSet<FaqArticleDTO>();
+		faqArticleDTOs1.add(faqArticleDTO2);
+		faqArticleDTOs1.add(faqArticleDTO3);
+		faqArticleDTO1.setFaqRelatedArticles(faqArticleDTOs1);
+		
+		Set<FaqArticleDTO> faqArticleDTOs = new HashSet<FaqArticleDTO>();
+		faqArticleDTOs.add(faqArticleDTO1);
+		
+		FaqCategoryDTO faqCategoryDTO = new FaqCategoryDTO();
+		faqCategoryDTO.setDisplayName("Sales");
+		faqCategoryDTO.setSummary("It belongs To Sales Department");
+		faqCategoryDTO.setFaqArticleDTO(faqArticleDTOs);
+		
+		FaqCategory faqCategory = faqCategoryService.createFaqCategory(faqCategoryDTO);
+		
+		
+		Long id = faqCategory.getId();
+		
+		mockMvc.perform(get("/faqArticles/faqCategorys/{id}", id)).andExpect(status().isOk()).andDo(print());
 	}
 
 	//@Test

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.core.EmbeddedWrapper;
@@ -57,6 +58,21 @@ public class FaqArticleController {
 		FaqArticle faqArticle = faqArticleService.getById(id);
 		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
 		return  new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/faqCategorys/{id}", method = RequestMethod.GET)
+	public ResponseEntity<PagedResources> getAllFaqArticleInCategory(@PathVariable Long id,
+			@PageableDefault Pageable pageable) {
+		Page<FaqArticle> faqArticlePage = faqArticleService.getAllArticleInCategory(id, pageable);
+		PagedResources pagedResources = pagedResourcesAssembler.toResource(faqArticlePage, faqArticleResourseAssembler);
+		if (faqArticlePage.getContent() == null || faqArticlePage.getContent().isEmpty()) {
+			EmbeddedWrappers wrappers = new EmbeddedWrappers(false);
+			EmbeddedWrapper wrapper = wrappers.emptyCollectionOf(FaqCategory.class);
+			List<EmbeddedWrapper> embedded = Collections.singletonList(wrapper);
+			pagedResources = new PagedResources(embedded, pagedResources.getMetadata(), pagedResources.getLinks());
+		}
+		return new ResponseEntity<PagedResources>(pagedResources, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

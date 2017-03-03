@@ -41,6 +41,11 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 	public List<FaqArticle> getAllFaqArticle() {
 		return faqArticleRepository.findAll();
 	}
+	
+	public Page<FaqArticle> getAllArticleInCategory(Long id,Pageable pageable) {
+		Page<FaqArticle> faqArticles = faqArticleRepository.findByFaqCategoryId(id, pageable);
+		return faqArticles;
+	}
 
 	@Transactional
 	public void deleteFaqArticle(Long id) {
