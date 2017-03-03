@@ -26,7 +26,7 @@ public class DTOToDomainConverstionService {
 			Set<FaqArticle> subfaqArticles = new HashSet<FaqArticle>();
 			for (FaqArticleDTO subfaqArticleDTO : faqArticleDTO.getFaqRelatedArticles()) {
 				FaqArticle subfaqArticle = new FaqArticle();
-				subfaqArticle.setTitle(faqArticleDTO.getTitle());
+				subfaqArticle.setTitle(subfaqArticleDTO.getTitle());
 				subfaqArticle.setBody(subfaqArticleDTO.getBody());
 				subfaqArticle.setPublish(subfaqArticleDTO.getPublish());
 				subfaqArticle.setKeywords(subfaqArticleDTO.getKeywords());
