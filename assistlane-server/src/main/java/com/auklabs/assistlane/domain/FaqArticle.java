@@ -34,6 +34,8 @@ public class FaqArticle extends AbstractEntity {
 	private Long id;
 
 	private String body;
+	
+	private String title;
 
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "keyword", joinColumns = { @JoinColumn(name = "id") })

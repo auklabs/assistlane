@@ -18,6 +18,7 @@ public class DTOToDomainConverstionService {
 		Set<FaqArticle> faqArticles = new HashSet<FaqArticle>();
 		for (FaqArticleDTO faqArticleDTO : faqArticleDTOs) {
 			FaqArticle faqArticle = new FaqArticle();
+			faqArticle.setTitle(faqArticleDTO.getTitle());
 			faqArticle.setBody(faqArticleDTO.getBody());
 			faqArticle.setPublish(faqArticleDTO.getPublish());
 			faqArticle.setKeywords(faqArticleDTO.getKeywords());
@@ -25,6 +26,7 @@ public class DTOToDomainConverstionService {
 			Set<FaqArticle> subfaqArticles = new HashSet<FaqArticle>();
 			for (FaqArticleDTO subfaqArticleDTO : faqArticleDTO.getFaqRelatedArticles()) {
 				FaqArticle subfaqArticle = new FaqArticle();
+				subfaqArticle.setTitle(faqArticleDTO.getTitle());
 				subfaqArticle.setBody(subfaqArticleDTO.getBody());
 				subfaqArticle.setPublish(subfaqArticleDTO.getPublish());
 				subfaqArticle.setKeywords(subfaqArticleDTO.getKeywords());
@@ -43,7 +45,9 @@ public class DTOToDomainConverstionService {
 	public FaqArticle convertFaqArticle(FaqArticleDTO faqArticleDTO) {
 
 		FaqArticle faqArticle = new FaqArticle();
+		
 		faqArticle.setBody(faqArticleDTO.getBody());
+		faqArticle.setTitle(faqArticleDTO.getTitle());
 		faqArticle.setPublish(faqArticleDTO.getPublish());
 		faqArticle.setKeywords(faqArticleDTO.getKeywords());
 		/*Set<FaqArticle> subfaqArticles = new HashSet<FaqArticle>();
