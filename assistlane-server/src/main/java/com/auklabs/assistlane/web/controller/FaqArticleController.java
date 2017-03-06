@@ -93,4 +93,11 @@ public class FaqArticleController {
 		faqArticleService.deleteFaqArticle(id);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@RequestMapping(value = "/{id}",method = RequestMethod.PUT)
+	public ResponseEntity<FaqArticleResource> updateFaqArticle(@PathVariable Long id,@RequestBody FaqArticleDTO faqArticleDTO){
+		FaqArticle faqArticle = faqArticleService.updateFaqArticle(id, faqArticleDTO);
+		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
+		return  new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+	}
 }

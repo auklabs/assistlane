@@ -2,6 +2,7 @@ package com.auklabs.assistlane.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.HashSet;
@@ -152,6 +153,40 @@ public class FaqArticleControllerTest extends AssistlaneAppApplicationTests {
 		mockMvc.perform(get("/faqArticles/faqCategorys/{id}", id)).andExpect(status().isOk()).andDo(print());
 	}
 
+	@Test
+	public void TestUpdateArticle() throws Exception{
+		
+		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
+		faqArticleDTO1.setBody("Article1");
+		faqArticleDTO1.setTitle("title1");
+		faqArticleDTO1.setPublish(false);
+		Set<String> keywords1 = new HashSet<String>();
+		keywords1.add("Java1");
+		keywords1.add("login1");
+		faqArticleDTO1.setKeywords(keywords1);
+		
+		FaqArticle faqArticle = faqArticleService.createFaqArticle(faqArticleDTO1);
+		Long id = faqArticle.getId();
+		
+		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
+		faqArticleDTO2.setBody("Article2");
+		faqArticleDTO2.setTitle("title2");
+		faqArticleDTO2.setPublish(false);
+		Set<String> keywords2 = new HashSet<String>();
+		keywords2.add("Java2");
+		keywords2.add("login2");
+		faqArticleDTO2.setKeywords(keywords2);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new Hibernate4Module());
+		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+		String requestJson = ow.writeValueAsString(faqArticleDTO2);
+		
+		mockMvc.perform(put("/faqArticles/{id}", id).contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson)).andExpect(status().isOk()).andDo(print());
+	}
+	
+	
+	
 	//@Test
 	public void Test() {
 

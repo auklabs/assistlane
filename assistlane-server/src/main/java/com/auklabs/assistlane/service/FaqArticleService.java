@@ -1,6 +1,8 @@
 package com.auklabs.assistlane.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +34,48 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 	public FaqArticle createFaqArticle(FaqArticleDTO faqArticleDTO) {
 		FaqArticle faqArticle = dtoToDomainConverstionService.convertFaqArticle(faqArticleDTO);
 		return faqArticleRepository.save(faqArticle);
+	}
+	
+	@Transactional
+	public FaqArticle updateFaqArticle(Long id, FaqArticleDTO faqArticleDTO) {
+		FaqArticle updateFaqArticle = faqArticleRepository.findOne(id);
+
+		if (faqArticleDTO.getBody() != null)
+			updateFaqArticle.setBody(faqArticleDTO.getBody());
+		else
+			updateFaqArticle.setBody(updateFaqArticle.getBody());
+
+		if (faqArticleDTO.getTitle() != null)
+			updateFaqArticle.setTitle(faqArticleDTO.getTitle());
+		else
+			updateFaqArticle.setTitle(updateFaqArticle.getTitle());
+
+		if (faqArticleDTO.getFaqRelatedArticles() != null && !faqArticleDTO.getFaqRelatedArticles().isEmpty()) {
+
+			Set<FaqArticle> faqArticles = new HashSet<FaqArticle>();
+			for (FaqArticleDTO faqArticleDTO2 : faqArticleDTO.getFaqRelatedArticles()) {
+
+				FaqArticle subfaqArticle = new FaqArticle();
+				subfaqArticle.setTitle(faqArticleDTO2.getTitle());
+				subfaqArticle.setBody(faqArticleDTO2.getBody());
+				subfaqArticle.setPublish(faqArticleDTO2.getPublish());
+				subfaqArticle.setKeywords(faqArticleDTO2.getKeywords());
+				faqArticles.add(subfaqArticle);
+			}
+			updateFaqArticle.setFaqRelatedArticles(faqArticles);
+		} else
+			updateFaqArticle.setFaqRelatedArticles(updateFaqArticle.getFaqRelatedArticles());
+
+		if (faqArticleDTO.getKeywords() != null && !faqArticleDTO.getKeywords().isEmpty())
+			updateFaqArticle.setKeywords(faqArticleDTO.getKeywords());
+		else
+			updateFaqArticle.setKeywords(updateFaqArticle.getKeywords());
+
+		updateFaqArticle.setPublish(faqArticleDTO.getPublish());
+		updateFaqArticle.setCreationDate(updateFaqArticle.getCreationDate());
+
+		return faqArticleRepository.save(updateFaqArticle);
+
 	}
 
 	public Page<FaqArticle> getAllFaqArticle(Pageable pageable) {
