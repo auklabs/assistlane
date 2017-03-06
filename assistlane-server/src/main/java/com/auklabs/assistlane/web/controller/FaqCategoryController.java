@@ -23,7 +23,7 @@ import com.auklabs.assistlane.resource.assembler.FaqCategoryResourceAssembler;
 import com.auklabs.assistlane.service.FaqCategoryService;
 
 @RestController
-@RequestMapping(value = "/api/v1/category")
+@RequestMapping(value = "faqCategories")
 public class FaqCategoryController {
 	
 	@Autowired
@@ -36,7 +36,7 @@ public class FaqCategoryController {
 	private PagedResourcesAssembler<FaqCategory> pagedResourcesAssembler;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value = "/getAllCategory", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<PagedResources> getAllFaqCategory(Pageable pageable) {
 		Page<FaqCategory> faqCategoryPage = faqCategoryService.getAllFaqCategory(pageable);
 		PagedResources adminPagedResources = pagedResourcesAssembler.toResource(faqCategoryPage, faqResourseAssembler);
@@ -51,27 +51,27 @@ public class FaqCategoryController {
 		return new ResponseEntity<PagedResources>(adminPagedResources, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/getCategory/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<FaqCategoryResource> getFaqCategory(@PathVariable Long id){
 		FaqCategory faqCategory = faqCategoryService.getById(id);
 		FaqCategoryResource rsource = faqResourseAssembler.toResource(faqCategory);
 		return  new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@RequestMapping( method = RequestMethod.POST)
 	public ResponseEntity<FaqCategoryResource> saveFaqCategory(@RequestBody FaqCategoryDTO faqCategoryDTO){
 		FaqCategory faqCategory = faqCategoryService.createFaqCategory(faqCategoryDTO);
 		FaqCategoryResource rsource = faqResourseAssembler.toResource(faqCategory);
 		return  new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value = "/delete/{id}" , method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}" , method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteFaqCategory(@PathVariable Long id){
 		faqCategoryService.deleteFaqCategory(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@RequestMapping(value = "/delete/all" , method = RequestMethod.DELETE)
+	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteAllFaqCategory(){
 		faqCategoryService.deleteAllFaqCategory();
 		return ResponseEntity.noContent().build();
