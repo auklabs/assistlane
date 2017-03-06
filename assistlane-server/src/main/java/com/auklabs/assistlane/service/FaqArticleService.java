@@ -9,14 +9,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.auklabs.assistlane.domain.FaqArticle;
+import com.auklabs.assistlane.domain.FaqCategory;
 import com.auklabs.assistlane.dto.models.FaqArticleDTO;
 import com.auklabs.assistlane.repository.FaqArticleRepository;
+import com.auklabs.assistlane.repository.FaqCategoryRepository;
 
 @Service
 public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 
 	@Autowired
 	private FaqArticleRepository faqArticleRepository;
+	
+	@Autowired
+	private FaqCategoryRepository faqCategoryRepository;
 
 	@Autowired
 	private DTOToDomainConverstionService dtoToDomainConverstionService;
@@ -95,6 +100,23 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 
 		return faqArticleRepository.save(updateFaqArticle);
 
+	}
+	
+	@Transactional
+	public FaqArticle addArticleInCategory(Long artilceId , Long categoryId){
+		FaqArticle updateFaqArticle = faqArticleRepository.findOne(artilceId);
+		
+		FaqCategory category = faqCategoryRepository.findOne(categoryId);
+		updateFaqArticle.setBody(updateFaqArticle.getBody());
+		updateFaqArticle.setTitle(updateFaqArticle.getTitle());
+		updateFaqArticle.setPublish(updateFaqArticle.getPublish());
+		updateFaqArticle.setKeywords(updateFaqArticle.getKeywords());
+		updateFaqArticle.setCreationDate(updateFaqArticle.getCreationDate());
+		updateFaqArticle.setFaqRelatedArticles(updateFaqArticle.getFaqRelatedArticles());
+		updateFaqArticle.setFaqCategory(category);
+		
+		return faqArticleRepository.save(updateFaqArticle);
+		
 	}
 
 	public Page<FaqArticle> getAllFaqArticle(Pageable pageable) {

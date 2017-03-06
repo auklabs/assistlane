@@ -30,13 +30,13 @@ public class FaqArticleController {
 
 	@Autowired
 	private FaqArticleService faqArticleService;
-	
+
 	@Autowired
 	private FaqArticleResourceAssembler faqArticleResourseAssembler;
 
 	@Autowired
 	private PagedResourcesAssembler<FaqArticle> pagedResourcesAssembler;
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<PagedResources> getAllFaqArticle(Pageable pageable) {
@@ -47,19 +47,18 @@ public class FaqArticleController {
 			EmbeddedWrappers wrappers = new EmbeddedWrappers(false);
 			EmbeddedWrapper wrapper = wrappers.emptyCollectionOf(FaqCategory.class);
 			List<EmbeddedWrapper> embedded = Collections.singletonList(wrapper);
-			pagedResources = new PagedResources(embedded, pagedResources.getMetadata(),
-					pagedResources.getLinks());
+			pagedResources = new PagedResources(embedded, pagedResources.getMetadata(), pagedResources.getLinks());
 		}
 		return new ResponseEntity<PagedResources>(pagedResources, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<FaqArticleResource> getFaqArticle(@PathVariable Long id){
+	public ResponseEntity<FaqArticleResource> getFaqArticle(@PathVariable Long id) {
 		FaqArticle faqArticle = faqArticleService.getById(id);
 		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
-		return  new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/faqCategorys/{id}", method = RequestMethod.GET)
 	public ResponseEntity<PagedResources> getAllFaqArticleInCategory(@PathVariable Long id,
@@ -74,42 +73,56 @@ public class FaqArticleController {
 		}
 		return new ResponseEntity<PagedResources>(pagedResources, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<FaqArticleResource> saveFaqArticle(@RequestBody FaqArticleDTO faqArticleDTO){
+	public ResponseEntity<FaqArticleResource> saveFaqArticle(@RequestBody FaqArticleDTO faqArticleDTO) {
 		FaqArticle faqArticle = faqArticleService.createFaqArticle(faqArticleDTO);
 		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
-		return  new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.CREATED);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.CREATED);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteAllFaqArticle(){
+	public ResponseEntity<Void> deleteAllFaqArticle() {
 		faqArticleService.deleteAllFaqArticle();
 		return ResponseEntity.noContent().build();
 	}
-	
-	@RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteFaqArticle(@PathVariable Long id){
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteFaqArticle(@PathVariable Long id) {
 		faqArticleService.deleteFaqArticle(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	@RequestMapping(value = "/{id}",method = RequestMethod.PUT)
-	public ResponseEntity<FaqArticleResource> updateFaqArticle(@PathVariable Long id,@RequestBody FaqArticleDTO faqArticleDTO){
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<FaqArticleResource> updateFaqArticle(@PathVariable Long id,
+			@RequestBody FaqArticleDTO faqArticleDTO) {
 		FaqArticle faqArticle = faqArticleService.updateFaqArticle(id, faqArticleDTO);
 		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
-		return  new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * @param id1 is ParentArticle id
 	 * @param id2 is childArticle id
 	 * @return
 	 */
-	@RequestMapping( value = "/{id1}/{id2}" , method = RequestMethod.PUT)
-	public ResponseEntity<FaqArticleResource> addRelatedArticle(@PathVariable Long id1,@PathVariable Long id2){
+	@RequestMapping(value = "/{id1}/{id2}", method = RequestMethod.PUT)
+	public ResponseEntity<FaqArticleResource> addRelatedArticle(@PathVariable Long id1, @PathVariable Long id2) {
 		FaqArticle faqArticle = faqArticleService.addRelatedArticle(id1, id2);
 		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
-		return  new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+	}
+
+	/**
+	 * @param id contain ArticleId
+	 * @param categoryid
+	 * @return
+	 */
+	@RequestMapping(value = "/add/{id}/{categoryid}", method = RequestMethod.PUT)
+	public ResponseEntity<FaqArticleResource> addArticleInCategory(@PathVariable Long id,
+			@PathVariable Long categoryid) {
+		FaqArticle faqArticle = faqArticleService.addArticleInCategory(id, categoryid);
+		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
 	}
 }

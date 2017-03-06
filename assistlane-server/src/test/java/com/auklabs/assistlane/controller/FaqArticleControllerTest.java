@@ -215,6 +215,30 @@ public class FaqArticleControllerTest extends AssistlaneAppApplicationTests {
 		mockMvc.perform(put("/faqArticles/{id1}/{id2}", id1,id2)).andExpect(status().isOk()).andDo(print());
 	}
 	
+	@Test
+	public void TestaddArticleInsideCategory() throws Exception{
+		
+		FaqCategoryDTO faqCategoryDTO = new FaqCategoryDTO();
+		faqCategoryDTO.setDisplayName("Sales");
+		faqCategoryDTO.setSummary("It belongs To Sales Department");
+		
+		FaqCategory category = faqCategoryService.createFaqCategory(faqCategoryDTO);
+		Long categoryid = category.getId();
+		
+		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
+		faqArticleDTO1.setBody("Article1");
+		faqArticleDTO1.setTitle("title1");
+		faqArticleDTO1.setPublish(false);
+		Set<String> keywords1 = new HashSet<String>();
+		keywords1.add("Java1");
+		keywords1.add("login1");
+		faqArticleDTO1.setKeywords(keywords1);
+		
+		FaqArticle faqArticle1 = faqArticleService.createFaqArticle(faqArticleDTO1);
+		Long id = faqArticle1.getId();
+		
+		mockMvc.perform(put("/faqArticles/add/{id}/{categoryid}",id,categoryid)).andExpect(status().isOk()).andDo(print());
+	}
 	
 	
 	//@Test
