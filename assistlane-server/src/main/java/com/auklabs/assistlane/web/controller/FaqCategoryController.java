@@ -65,6 +65,13 @@ public class FaqCategoryController {
 		return  new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.CREATED);
 	}
 	
+	@RequestMapping( value = "/{id}",method = RequestMethod.PUT)
+	public ResponseEntity<FaqCategoryResource> updateFaqCategory(@PathVariable Long id ,@RequestBody FaqCategoryDTO faqCategoryDTO){
+		FaqCategory faqCategory = faqCategoryService.updateFaqCategory(id, faqCategoryDTO);
+		FaqCategoryResource rsource = faqResourseAssembler.toResource(faqCategory);
+		return  new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/{id}" , method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteFaqCategory(@PathVariable Long id){
 		faqCategoryService.deleteFaqCategory(id);

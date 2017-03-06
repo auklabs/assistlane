@@ -34,6 +34,23 @@ public class FaqCategoryService extends AbstractService<FaqCategory, Long>{
 		return faqCategoryRepository.save(faqCategory);
 	}
 	
+	@Transactional
+	public FaqCategory updateFaqCategory(Long id, FaqCategoryDTO faqCategoryDTO) {
+		FaqCategory category = faqCategoryRepository.findOne(id);
+
+		if (faqCategoryDTO.getDisplayName() != null && !faqCategoryDTO.getDisplayName().equals(""))
+			category.setDisplayName(faqCategoryDTO.getDisplayName());
+		else
+			category.setDisplayName(category.getDisplayName());
+
+		if (faqCategoryDTO.getSummary() != null && !faqCategoryDTO.getSummary().equals(""))
+			category.setSummary(faqCategoryDTO.getSummary());
+		else
+			category.setSummary(category.getSummary());
+		category.setCreationDate(category.getCreationDate());
+		return category;
+	}
+	
 	public Page<FaqCategory> getAllFaqCategory(Pageable pageable){
 		return faqCategoryRepository.findAll(pageable);
 	}

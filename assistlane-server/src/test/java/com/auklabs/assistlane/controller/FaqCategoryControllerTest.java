@@ -3,6 +3,7 @@ package com.auklabs.assistlane.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import com.auklabs.assistlane.AssistlaneAppApplicationTests;
 import com.auklabs.assistlane.domain.FaqCategory;
 import com.auklabs.assistlane.dto.models.FaqArticleDTO;
 import com.auklabs.assistlane.dto.models.FaqCategoryDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
@@ -304,6 +306,29 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		
 		mockMvc.perform(delete("/faqCategories"))
 		.andExpect(status().isNoContent()).andDo(print());
+	}
+	
+	@Test
+	public void TestUpdateCategory() throws Exception{
+		
+		FaqCategoryDTO faqCategoryDTO = new FaqCategoryDTO();
+		faqCategoryDTO.setDisplayName("Sales");
+		faqCategoryDTO.setSummary("It belongs To Sales Department");
+		
+		FaqCategory category = faqCategoryService.createFaqCategory(faqCategoryDTO);
+		Long id = category.getId();
+		
+		FaqCategoryDTO faqCategoryDTO1 = new FaqCategoryDTO();
+		faqCategoryDTO1.setDisplayName("Finance");
+		faqCategoryDTO1.setSummary("It belongs To Finance Department");
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new Hibernate4Module());
+		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+		String requestJson = ow.writeValueAsString(faqCategoryDTO1);
+		
+		mockMvc.perform(put("/faqCategories/{id}" ,id).contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson)).andExpect(status().isOk()).andDo(print());
+		
 	}
 	
 }
