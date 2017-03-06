@@ -101,6 +101,11 @@ public class FaqArticleController {
 		return  new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
 	}
 	
+	/**
+	 * @param id1 is ParentArticle id
+	 * @param id2 is childArticle id
+	 * @return
+	 */
 	@RequestMapping( value = "/{id1}/{id2}" , method = RequestMethod.PUT)
 	public ResponseEntity<FaqArticleResource> addRelatedArticle(@PathVariable Long id1,@PathVariable Long id2){
 		FaqArticle faqArticle = faqArticleService.addRelatedArticle(id1, id2);
