@@ -185,6 +185,36 @@ public class FaqArticleControllerTest extends AssistlaneAppApplicationTests {
 		mockMvc.perform(put("/faqArticles/{id}", id).contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson)).andExpect(status().isOk()).andDo(print());
 	}
 	
+	@Test
+	public void TestAddArticleInsideArticle() throws Exception{
+		
+		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
+		faqArticleDTO1.setBody("Article1");
+		faqArticleDTO1.setTitle("title1");
+		faqArticleDTO1.setPublish(false);
+		Set<String> keywords1 = new HashSet<String>();
+		keywords1.add("Java1");
+		keywords1.add("login1");
+		faqArticleDTO1.setKeywords(keywords1);
+		
+		FaqArticle faqArticle1 = faqArticleService.createFaqArticle(faqArticleDTO1);
+		Long id1 = faqArticle1.getId();
+		
+		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
+		faqArticleDTO2.setBody("Article2");
+		faqArticleDTO2.setTitle("title2");
+		faqArticleDTO2.setPublish(false);
+		Set<String> keywords2 = new HashSet<String>();
+		keywords2.add("Java2");
+		keywords2.add("login2");
+		faqArticleDTO2.setKeywords(keywords2);
+		
+		FaqArticle faqArticle2 = faqArticleService.createFaqArticle(faqArticleDTO2);
+		Long id2 = faqArticle2.getId();
+		
+		mockMvc.perform(put("/faqArticles/{id1}/{id2}", id1,id2)).andExpect(status().isOk()).andDo(print());
+	}
+	
 	
 	
 	//@Test

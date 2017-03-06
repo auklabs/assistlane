@@ -77,6 +77,25 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 		return faqArticleRepository.save(updateFaqArticle);
 
 	}
+	
+	@Transactional
+	public FaqArticle addRelatedArticle(Long id1, Long id2) {
+		FaqArticle updateFaqArticle = faqArticleRepository.findOne(id1);
+		FaqArticle toBeAddedArticle = faqArticleRepository.findOne(id2);
+
+		Set<FaqArticle> faqArticles = new HashSet<FaqArticle>();
+		faqArticles.add(toBeAddedArticle);
+
+		updateFaqArticle.setBody(updateFaqArticle.getBody());
+		updateFaqArticle.setTitle(updateFaqArticle.getTitle());
+		updateFaqArticle.setPublish(updateFaqArticle.getPublish());
+		updateFaqArticle.setKeywords(updateFaqArticle.getKeywords());
+		updateFaqArticle.setCreationDate(updateFaqArticle.getCreationDate());
+		updateFaqArticle.setFaqRelatedArticles(faqArticles);
+
+		return faqArticleRepository.save(updateFaqArticle);
+
+	}
 
 	public Page<FaqArticle> getAllFaqArticle(Pageable pageable) {
 		return faqArticleRepository.findAll(pageable);

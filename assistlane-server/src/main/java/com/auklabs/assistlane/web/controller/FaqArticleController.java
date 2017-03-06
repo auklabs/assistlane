@@ -100,4 +100,11 @@ public class FaqArticleController {
 		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
 		return  new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
 	}
+	
+	@RequestMapping( value = "/{id1}/{id2}" , method = RequestMethod.PUT)
+	public ResponseEntity<FaqArticleResource> addRelatedArticle(@PathVariable Long id1,@PathVariable Long id2){
+		FaqArticle faqArticle = faqArticleService.addRelatedArticle(id1, id2);
+		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
+		return  new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+	}
 }
