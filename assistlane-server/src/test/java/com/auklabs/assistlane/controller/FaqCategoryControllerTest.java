@@ -8,20 +8,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.HashSet;
 import java.util.Set;
+import org.junit.After;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import com.auklabs.assistlane.AssistlaneAppApplicationTests;
 import com.auklabs.assistlane.domain.FaqCategory;
 import com.auklabs.assistlane.dto.models.FaqArticleDTO;
 import com.auklabs.assistlane.dto.models.FaqCategoryDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 
 public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 
-	//@After
+	@After
 	public void cleanup(){
 		faqCategoryRepository.deleteAll();
 	}
@@ -196,7 +196,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		mockMvc.perform(get("/faqCategories")).andExpect(status().isOk()).andDo(print());
 	}
 	
-	//@Test
+	@Test
 	public void deleteFaqCategory() throws Exception{
 		
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
@@ -252,7 +252,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		.andExpect(status().isNoContent()).andDo(print());
 	}
 	
-	//@Test
+	@Test
 	public void deleteAllFaqCategory() throws Exception{
 		
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();

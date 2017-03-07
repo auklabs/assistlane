@@ -32,6 +32,6 @@ public class FaqCategory extends AbstractEntity {
 
 	private String summary;
 
-	@OneToMany(mappedBy = "faqCategory", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "faqCategory", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,orphanRemoval = true)
 	private Set<FaqArticle> faqArticle = new HashSet<FaqArticle>();
 }
