@@ -22,13 +22,13 @@ import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 
 	@After
-	public void cleanup(){
+	public void cleanup() {
 		faqCategoryRepository.deleteAll();
 	}
-	
+
 	@Test
-	public void saveFaqCategoryTest() throws Exception{
-		
+	public void saveFaqCategoryTest() throws Exception {
+
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
 		faqArticleDTO2.setBody("Article2");
 		faqArticleDTO2.setTitle("title2");
@@ -39,8 +39,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		faqArticleDTO2.setKeywords(keywords2);
 		Set<FaqArticleDTO> faqArticleDTOs2 = new HashSet<FaqArticleDTO>();
 		faqArticleDTO2.setFaqRelatedArticles(faqArticleDTOs2);
-		
-		
+
 		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
 		faqArticleDTO3.setBody("Article3");
 		faqArticleDTO3.setTitle("title3");
@@ -51,8 +50,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		faqArticleDTO3.setKeywords(keywords3);
 		Set<FaqArticleDTO> faqArticleDTOs3 = new HashSet<FaqArticleDTO>();
 		faqArticleDTO3.setFaqRelatedArticles(faqArticleDTOs3);
-		
-		
+
 		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
 		faqArticleDTO1.setBody("Article1");
 		faqArticleDTO1.setTitle("title1");
@@ -61,32 +59,33 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		keywords1.add("Java1");
 		keywords1.add("login1");
 		faqArticleDTO1.setKeywords(keywords1);
-		
+
 		Set<FaqArticleDTO> faqArticleDTOs1 = new HashSet<FaqArticleDTO>();
 		faqArticleDTOs1.add(faqArticleDTO2);
 		faqArticleDTOs1.add(faqArticleDTO3);
 		faqArticleDTO1.setFaqRelatedArticles(faqArticleDTOs1);
-		
+
 		Set<FaqArticleDTO> faqArticleDTOs = new HashSet<FaqArticleDTO>();
 		faqArticleDTOs.add(faqArticleDTO1);
-		
+
 		FaqCategoryDTO faqCategoryDTO = new FaqCategoryDTO();
 		faqCategoryDTO.setDisplayName("Sales");
 		faqCategoryDTO.setSummary("It belongs To Sales Department");
 		faqCategoryDTO.setFaqArticleDTO(faqArticleDTOs);
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new Hibernate4Module());
 		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(faqCategoryDTO);
-		
-		mockMvc.perform(post("/faqCategories").contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson)).andExpect(status().is2xxSuccessful()).andDo(print());
-		 
+
+		mockMvc.perform(post("/faqCategories").contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson))
+				.andExpect(status().is2xxSuccessful()).andDo(print());
+
 	}
-	
+
 	@Test
-	public void getFaqCategory() throws Exception{
-		
+	public void getFaqCategory() throws Exception {
+
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
 		faqArticleDTO2.setBody("Article2");
 		faqArticleDTO2.setTitle("title2");
@@ -97,8 +96,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		faqArticleDTO2.setKeywords(keywords2);
 		Set<FaqArticleDTO> faqArticleDTOs2 = new HashSet<FaqArticleDTO>();
 		faqArticleDTO2.setFaqRelatedArticles(faqArticleDTOs2);
-		
-		
+
 		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
 		faqArticleDTO3.setBody("Article3");
 		faqArticleDTO3.setTitle("title3");
@@ -109,8 +107,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		faqArticleDTO3.setKeywords(keywords3);
 		Set<FaqArticleDTO> faqArticleDTOs3 = new HashSet<FaqArticleDTO>();
 		faqArticleDTO3.setFaqRelatedArticles(faqArticleDTOs3);
-		
-		
+
 		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
 		faqArticleDTO1.setBody("Article1");
 		faqArticleDTO1.setTitle("title1");
@@ -119,32 +116,29 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		keywords1.add("Java1");
 		keywords1.add("login1");
 		faqArticleDTO1.setKeywords(keywords1);
-		
+
 		Set<FaqArticleDTO> faqArticleDTOs1 = new HashSet<FaqArticleDTO>();
 		faqArticleDTOs1.add(faqArticleDTO2);
 		faqArticleDTOs1.add(faqArticleDTO3);
 		faqArticleDTO1.setFaqRelatedArticles(faqArticleDTOs1);
-		
+
 		Set<FaqArticleDTO> faqArticleDTOs = new HashSet<FaqArticleDTO>();
 		faqArticleDTOs.add(faqArticleDTO1);
-		
+
 		FaqCategoryDTO faqCategoryDTO = new FaqCategoryDTO();
 		faqCategoryDTO.setDisplayName("Sales");
 		faqCategoryDTO.setSummary("It belongs To Sales Department");
 		faqCategoryDTO.setFaqArticleDTO(faqArticleDTOs);
-		
+
 		FaqCategory faqCategory = faqCategoryService.createFaqCategory(faqCategoryDTO);
-		
+
 		Long id = faqCategory.getId();
-		mockMvc.perform(get("/faqCategories/{id}", id))
-		.andExpect(status().isOk()).andDo(print());
+		mockMvc.perform(get("/faqCategories/{id}", id)).andExpect(status().isOk()).andDo(print());
 	}
-	
-	
-	
+
 	@Test
-	public void getAllFaqCategory() throws Exception{
-		
+	public void getAllFaqCategory() throws Exception {
+
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
 		faqArticleDTO2.setBody("Article2");
 		faqArticleDTO2.setTitle("title2");
@@ -155,8 +149,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		faqArticleDTO2.setKeywords(keywords2);
 		Set<FaqArticleDTO> faqArticleDTOs2 = new HashSet<FaqArticleDTO>();
 		faqArticleDTO2.setFaqRelatedArticles(faqArticleDTOs2);
-		
-		
+
 		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
 		faqArticleDTO3.setBody("Article3");
 		faqArticleDTO3.setTitle("title3");
@@ -167,8 +160,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		faqArticleDTO3.setKeywords(keywords3);
 		Set<FaqArticleDTO> faqArticleDTOs3 = new HashSet<FaqArticleDTO>();
 		faqArticleDTO3.setFaqRelatedArticles(faqArticleDTOs3);
-		
-		
+
 		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
 		faqArticleDTO1.setBody("Article1");
 		faqArticleDTO1.setTitle("title1");
@@ -177,28 +169,28 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		keywords1.add("Java1");
 		keywords1.add("login1");
 		faqArticleDTO1.setKeywords(keywords1);
-		
+
 		Set<FaqArticleDTO> faqArticleDTOs1 = new HashSet<FaqArticleDTO>();
 		faqArticleDTOs1.add(faqArticleDTO2);
 		faqArticleDTOs1.add(faqArticleDTO3);
 		faqArticleDTO1.setFaqRelatedArticles(faqArticleDTOs1);
-		
+
 		Set<FaqArticleDTO> faqArticleDTOs = new HashSet<FaqArticleDTO>();
 		faqArticleDTOs.add(faqArticleDTO1);
-		
+
 		FaqCategoryDTO faqCategoryDTO = new FaqCategoryDTO();
 		faqCategoryDTO.setDisplayName("Sales");
 		faqCategoryDTO.setSummary("It belongs To Sales Department");
 		faqCategoryDTO.setFaqArticleDTO(faqArticleDTOs);
-		
+
 		faqCategoryService.createFaqCategory(faqCategoryDTO);
-	
+
 		mockMvc.perform(get("/faqCategories")).andExpect(status().isOk()).andDo(print());
 	}
-	
+
 	@Test
-	public void deleteFaqCategory() throws Exception{
-		
+	public void deleteFaqCategory() throws Exception {
+
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
 		faqArticleDTO2.setBody("Article2");
 		faqArticleDTO2.setTitle("title2");
@@ -209,8 +201,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		faqArticleDTO2.setKeywords(keywords2);
 		Set<FaqArticleDTO> faqArticleDTOs2 = new HashSet<FaqArticleDTO>();
 		faqArticleDTO2.setFaqRelatedArticles(faqArticleDTOs2);
-		
-		
+
 		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
 		faqArticleDTO3.setBody("Article3");
 		faqArticleDTO3.setTitle("title3");
@@ -221,8 +212,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		faqArticleDTO3.setKeywords(keywords3);
 		Set<FaqArticleDTO> faqArticleDTOs3 = new HashSet<FaqArticleDTO>();
 		faqArticleDTO3.setFaqRelatedArticles(faqArticleDTOs3);
-		
-		
+
 		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
 		faqArticleDTO1.setBody("Article1");
 		faqArticleDTO1.setTitle("title1");
@@ -231,30 +221,29 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		keywords1.add("Java1");
 		keywords1.add("login1");
 		faqArticleDTO1.setKeywords(keywords1);
-		
+
 		Set<FaqArticleDTO> faqArticleDTOs1 = new HashSet<FaqArticleDTO>();
 		faqArticleDTOs1.add(faqArticleDTO2);
 		faqArticleDTOs1.add(faqArticleDTO3);
 		faqArticleDTO1.setFaqRelatedArticles(faqArticleDTOs1);
-		
+
 		Set<FaqArticleDTO> faqArticleDTOs = new HashSet<FaqArticleDTO>();
 		faqArticleDTOs.add(faqArticleDTO1);
-		
+
 		FaqCategoryDTO faqCategoryDTO = new FaqCategoryDTO();
 		faqCategoryDTO.setDisplayName("Sales");
 		faqCategoryDTO.setSummary("It belongs To Sales Department");
 		faqCategoryDTO.setFaqArticleDTO(faqArticleDTOs);
-		
+
 		FaqCategory faqCategory = faqCategoryService.createFaqCategory(faqCategoryDTO);
 		Long id = faqCategory.getId();
-		
-		mockMvc.perform(delete("/faqCategories/{id}", id))
-		.andExpect(status().isNoContent()).andDo(print());
+
+		mockMvc.perform(delete("/faqCategories/{id}", id)).andExpect(status().isNoContent()).andDo(print());
 	}
-	
+
 	@Test
-	public void deleteAllFaqCategory() throws Exception{
-		
+	public void deleteAllFaqCategory() throws Exception {
+
 		FaqArticleDTO faqArticleDTO2 = new FaqArticleDTO();
 		faqArticleDTO2.setBody("Article2");
 		faqArticleDTO2.setTitle("title2");
@@ -265,8 +254,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		faqArticleDTO2.setKeywords(keywords2);
 		Set<FaqArticleDTO> faqArticleDTOs2 = new HashSet<FaqArticleDTO>();
 		faqArticleDTO2.setFaqRelatedArticles(faqArticleDTOs2);
-		
-		
+
 		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
 		faqArticleDTO3.setBody("Article3");
 		faqArticleDTO3.setTitle("title3");
@@ -277,8 +265,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		faqArticleDTO3.setKeywords(keywords3);
 		Set<FaqArticleDTO> faqArticleDTOs3 = new HashSet<FaqArticleDTO>();
 		faqArticleDTO3.setFaqRelatedArticles(faqArticleDTOs3);
-		
-		
+
 		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
 		faqArticleDTO1.setBody("Article1");
 		faqArticleDTO1.setTitle("title1");
@@ -287,48 +274,49 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		keywords1.add("Java1");
 		keywords1.add("login1");
 		faqArticleDTO1.setKeywords(keywords1);
-		
+
 		Set<FaqArticleDTO> faqArticleDTOs1 = new HashSet<FaqArticleDTO>();
 		faqArticleDTOs1.add(faqArticleDTO2);
 		faqArticleDTOs1.add(faqArticleDTO3);
 		faqArticleDTO1.setFaqRelatedArticles(faqArticleDTOs1);
-		
+
 		Set<FaqArticleDTO> faqArticleDTOs = new HashSet<FaqArticleDTO>();
 		faqArticleDTOs.add(faqArticleDTO1);
-		
+
 		FaqCategoryDTO faqCategoryDTO = new FaqCategoryDTO();
 		faqCategoryDTO.setDisplayName("Sales");
 		faqCategoryDTO.setSummary("It belongs To Sales Department");
 		faqCategoryDTO.setFaqArticleDTO(faqArticleDTOs);
-		
+
 		faqCategoryService.createFaqCategory(faqCategoryDTO);
 		faqCategoryService.createFaqCategory(faqCategoryDTO);
-		
-		mockMvc.perform(delete("/faqCategories"))
-		.andExpect(status().isNoContent()).andDo(print());
+
+		mockMvc.perform(delete("/faqCategories")).andExpect(status().isNoContent()).andDo(print());
 	}
-	
+
 	@Test
-	public void TestUpdateCategory() throws Exception{
-		
+	public void TestUpdateCategory() throws Exception {
+
 		FaqCategoryDTO faqCategoryDTO = new FaqCategoryDTO();
 		faqCategoryDTO.setDisplayName("Sales");
 		faqCategoryDTO.setSummary("It belongs To Sales Department");
-		
+
 		FaqCategory category = faqCategoryService.createFaqCategory(faqCategoryDTO);
 		Long id = category.getId();
-		
+
 		FaqCategoryDTO faqCategoryDTO1 = new FaqCategoryDTO();
 		faqCategoryDTO1.setDisplayName("Finance");
 		faqCategoryDTO1.setSummary("It belongs To Finance Department");
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new Hibernate4Module());
 		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
 		String requestJson = ow.writeValueAsString(faqCategoryDTO1);
-		
-		mockMvc.perform(put("/faqCategories/{id}" ,id).contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson)).andExpect(status().isOk()).andDo(print());
-		
+
+		mockMvc.perform(
+				put("/faqCategories/{id}", id).contentType(MediaType.APPLICATION_JSON_UTF8).content(requestJson))
+				.andExpect(status().isOk()).andDo(print());
+
 	}
-	
+
 }
