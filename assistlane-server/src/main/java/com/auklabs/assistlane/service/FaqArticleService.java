@@ -134,8 +134,27 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 
 	@Transactional
 	public void deleteFaqArticle(Long id) {
-		FaqArticle faqArticle = getById(id);
-		faqArticleRepository.delete(faqArticle);
+		
+		FaqArticle faqArticle = faqArticleRepository.findByFaqRelatedArticlesId(id);
+		Set<FaqArticle> faqRelatedArticles = new HashSet<FaqArticle>();
+		if (faqArticle != null) {
+			for (FaqArticle faqArticle2 : faqArticle.getFaqRelatedArticles()) {
+				if (!faqArticle2.getId().equals(id)) {
+					faqRelatedArticles.add(faqArticle2);
+				}
+			}
+			faqArticle.setBody(faqArticle.getBody());
+			faqArticle.setKeywords(faqArticle.getKeywords());
+			faqArticle.setPublish(faqArticle.getPublish());
+			faqArticle.setTitle(faqArticle.getTitle());
+			faqArticle.setCreationDate(faqArticle.getCreationDate());
+			faqArticle.setFaqRelatedArticles(faqRelatedArticles);
+			faqArticle.setFaqCategory(faqArticle.getFaqCategory());
+			faqArticleRepository.save(faqArticle);
+			faqArticleRepository.delete(id);
+		} else {
+			faqArticleRepository.delete(id);
+		}
 	}
 
 	@Transactional

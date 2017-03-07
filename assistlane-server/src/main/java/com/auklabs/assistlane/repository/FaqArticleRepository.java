@@ -8,4 +8,6 @@ import com.auklabs.assistlane.domain.FaqArticle;
 public interface FaqArticleRepository extends JpaRepository<FaqArticle, Long> {
 
 	Page<FaqArticle> findByFaqCategoryId(Long id,Pageable pageable);
+	
+	FaqArticle findByFaqRelatedArticlesId(Long id);
 }

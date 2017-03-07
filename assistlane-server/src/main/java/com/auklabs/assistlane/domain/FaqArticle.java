@@ -41,12 +41,12 @@ public class FaqArticle extends AbstractEntity {
 	@CollectionTable(name = "keyword", joinColumns = { @JoinColumn(name = "id") })
 	private Set<String> keywords = new HashSet<String>();
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
 	private Set<FaqArticle> faqRelatedArticles = new HashSet<FaqArticle>();
 
 	@Column(name = "publish")
 	private Boolean publish;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private FaqCategory faqCategory;
 }
