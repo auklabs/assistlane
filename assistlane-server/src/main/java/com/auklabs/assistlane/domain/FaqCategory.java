@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import org.hibernate.envers.Audited;
+import org.springframework.data.rest.core.annotation.RestResource;
 import com.auklabs.assistlane.repository.event.AbstractEntityListener;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,12 +27,13 @@ public class FaqCategory extends AbstractEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
+	
 	@Column(name = "display_name")
 	private String displayName;
 
 	private String summary;
 
-	@OneToMany(mappedBy = "faqCategory", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,orphanRemoval = true)
+	@OneToMany(mappedBy = "faqCategory", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER,orphanRemoval = true)
+	@RestResource(exported = false) //for Showing this details in FaqCategory
 	private Set<FaqArticle> faqArticle = new HashSet<FaqArticle>();
 }

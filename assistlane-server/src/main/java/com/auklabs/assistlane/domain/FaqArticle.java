@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import org.hibernate.envers.Audited;
+import org.springframework.data.rest.core.annotation.RestResource;
 import com.auklabs.assistlane.repository.event.AbstractEntityListener;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,6 +43,7 @@ public class FaqArticle extends AbstractEntity {
 	private Set<String> keywords = new HashSet<String>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@RestResource(exported = false) // for Showing this details in FaqArticle
 	private Set<FaqArticle> faqRelatedArticles = new HashSet<FaqArticle>();
 
 	@Column(name = "publish")
