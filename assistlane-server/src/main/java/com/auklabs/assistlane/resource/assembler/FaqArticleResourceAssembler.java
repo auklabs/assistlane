@@ -14,16 +14,26 @@ import com.auklabs.assistlane.web.controller.FaqArticleController;
 public class FaqArticleResourceAssembler extends ResourceAssemblerSupport<FaqArticle, FaqArticleResource> {
 
 	@Autowired
-    private RepositoryEntityLinks repositoryEntityLinks;
-	
+	private RepositoryEntityLinks repositoryEntityLinks;
+
 	public FaqArticleResourceAssembler() {
 		super(FaqArticleController.class, FaqArticleResource.class);
+	}
+
+	public Link linkToSingleResource(FaqArticle faqArticle) {
+		return repositoryEntityLinks.linkToSingleResource(FaqArticle.class, faqArticle.getId());
 	}
 
 	@Override
 	public FaqArticleResource toResource(FaqArticle faqArticle) {
 		Link faqArticleLink = repositoryEntityLinks.linkToSingleResource(FaqArticle.class, faqArticle.getId());
-        Link selfLink = new Link(faqArticleLink.getHref(), Link.REL_SELF);
-        return new FaqArticleResource(faqArticle, Arrays.asList(selfLink, faqArticleLink));
+		Link selfLink = new Link(faqArticleLink.getHref(), Link.REL_SELF);
+		FaqArticleResource resource = new FaqArticleResource(faqArticle, Arrays.asList(selfLink, faqArticleLink));
+		
+		for (FaqArticle article : faqArticle.getFaqRelatedArticles()) {
+			resource.add(linkToSingleResource(article));
+		}
+		return resource;
 	}
+
 }

@@ -6,6 +6,7 @@ import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
+import com.auklabs.assistlane.domain.FaqArticle;
 import com.auklabs.assistlane.domain.FaqCategory;
 import com.auklabs.assistlane.resource.FaqCategoryResource;
 import com.auklabs.assistlane.web.controller.FaqCategoryController;
@@ -16,6 +17,8 @@ public class FaqCategoryResourceAssembler extends ResourceAssemblerSupport<FaqCa
 	@Autowired
     private RepositoryEntityLinks repositoryEntityLinks;
 	
+	@Autowired
+	private FaqArticleResourceAssembler faqArticleResourceAssembler;
 	
 	public FaqCategoryResourceAssembler() {
 		super(FaqCategoryController.class, FaqCategoryResource.class);
@@ -25,6 +28,11 @@ public class FaqCategoryResourceAssembler extends ResourceAssemblerSupport<FaqCa
 	public FaqCategoryResource toResource(FaqCategory faqCategory) {
 		Link faqCategoryLink = repositoryEntityLinks.linkToSingleResource(FaqCategory.class, faqCategory.getId());
         Link selfLink = new Link(faqCategoryLink.getHref(), Link.REL_SELF);
-        return new FaqCategoryResource(faqCategory, Arrays.asList(selfLink, faqCategoryLink));
+        
+        FaqCategoryResource resource = new FaqCategoryResource(faqCategory, Arrays.asList(selfLink, faqCategoryLink));
+        for(FaqArticle article : faqCategory.getFaqArticle()){
+        	resource.add(faqArticleResourceAssembler.linkToSingleResource(article));
+        }
+        return resource;
 	}
 }
