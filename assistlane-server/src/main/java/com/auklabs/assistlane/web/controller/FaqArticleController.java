@@ -37,6 +37,10 @@ public class FaqArticleController {
 	@Autowired
 	private PagedResourcesAssembler<FaqArticle> pagedResourcesAssembler;
 
+	/**
+	 * @param pageable
+	 * @return all Article
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<PagedResources> getAllFaqArticle(Pageable pageable) {
@@ -52,6 +56,10 @@ public class FaqArticleController {
 		return new ResponseEntity<PagedResources>(pagedResources, HttpStatus.OK);
 	}
 
+	/**
+	 * @param id
+	 * @return FaqArticleResource
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<FaqArticleResource> getFaqArticle(@PathVariable Long id) {
 		FaqArticle faqArticle = faqArticleService.getById(id);
@@ -59,6 +67,11 @@ public class FaqArticleController {
 		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
 	}
 
+	/**
+	 * @param id
+	 * @param pageable
+	 * @return All FaqArticle In A FaqCategory
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/faqCategorys/{id}", method = RequestMethod.GET)
 	public ResponseEntity<PagedResources> getAllFaqArticleInCategory(@PathVariable Long id,
@@ -74,6 +87,10 @@ public class FaqArticleController {
 		return new ResponseEntity<PagedResources>(pagedResources, HttpStatus.OK);
 	}
 
+	/**
+	 * @param faqArticleDTO
+	 * @return FaqArticleResource
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<FaqArticleResource> saveFaqArticle(@RequestBody FaqArticleDTO faqArticleDTO) {
 		FaqArticle faqArticle = faqArticleService.createFaqArticle(faqArticleDTO);
@@ -81,18 +98,28 @@ public class FaqArticleController {
 		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.CREATED);
 	}
 
+	
 	@RequestMapping(method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteAllFaqArticle() {
 		faqArticleService.deleteAllFaqArticle();
 		return ResponseEntity.noContent().build();
 	}
 
+	/**
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteFaqArticle(@PathVariable Long id) {
 		faqArticleService.deleteFaqArticle(id);
 		return ResponseEntity.noContent().build();
 	}
 
+	/**
+	 * @param id
+	 * @param faqArticleDTO
+	 * @return FaqArticleResource
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<FaqArticleResource> updateFaqArticle(@PathVariable Long id,
 			@RequestBody FaqArticleDTO faqArticleDTO) {
@@ -104,7 +131,7 @@ public class FaqArticleController {
 	/**
 	 * @param id1 is ParentArticle id
 	 * @param id2 is childArticle id
-	 * @return
+	 * @return FaqArticleResource
 	 */
 	@RequestMapping(value = "/{id1}/{id2}", method = RequestMethod.PUT)
 	public ResponseEntity<FaqArticleResource> addRelatedArticle(@PathVariable Long id1, @PathVariable Long id2) {
@@ -116,7 +143,7 @@ public class FaqArticleController {
 	/**
 	 * @param id contain ArticleId
 	 * @param categoryid
-	 * @return
+	 * @return FaqArticleResource
 	 */
 	@RequestMapping(value = "/add/{id}/{categoryid}", method = RequestMethod.PUT)
 	public ResponseEntity<FaqArticleResource> addArticleInCategory(@PathVariable Long id,

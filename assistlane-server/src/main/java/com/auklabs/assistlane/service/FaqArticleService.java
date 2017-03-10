@@ -35,12 +35,21 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 		return faqArticleRepository.findOne(id);
 	}
 
+	/**
+	 * @param faqArticleDTO
+	 * @return FaqArticle
+	 */
 	@Transactional
 	public FaqArticle createFaqArticle(FaqArticleDTO faqArticleDTO) {
 		FaqArticle faqArticle = dtoToDomainConverstionService.convertFaqArticle(faqArticleDTO);
 		return faqArticleRepository.save(faqArticle);
 	}
 	
+	/**
+	 * @param id
+	 * @param faqArticleDTO
+	 * @return FaqArticle
+	 */
 	@Transactional
 	public FaqArticle updateFaqArticle(Long id, FaqArticleDTO faqArticleDTO) {
 		FaqArticle updateFaqArticle = faqArticleRepository.findOne(id);
@@ -83,6 +92,11 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 
 	}
 	
+	/**
+	 * @param id1
+	 * @param id2
+	 * @return FaqArticle
+	 */
 	@Transactional
 	public FaqArticle addRelatedArticle(Long id1, Long id2) {
 		FaqArticle updateFaqArticle = faqArticleRepository.findOne(id1);
@@ -102,6 +116,11 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 
 	}
 	
+	/**
+	 * @param artilceId
+	 * @param categoryId
+	 * @return FaqArticle
+	 */
 	@Transactional
 	public FaqArticle addArticleInCategory(Long artilceId , Long categoryId){
 		FaqArticle updateFaqArticle = faqArticleRepository.findOne(artilceId);
@@ -119,19 +138,34 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 		
 	}
 
+	/**
+	 * @param pageable
+	 * @return Page<FaqArticle>
+	 */
 	public Page<FaqArticle> getAllFaqArticle(Pageable pageable) {
 		return faqArticleRepository.findAll(pageable);
 	}
 	
+	/**
+	 * @return List<FaqArticle>
+	 */
 	public List<FaqArticle> getAllFaqArticle() {
 		return faqArticleRepository.findAll();
 	}
 	
+	/**
+	 * @param id
+	 * @param pageable
+	 * @return Page<FaqArticle>
+	 */
 	public Page<FaqArticle> getAllArticleInCategory(Long id,Pageable pageable) {
 		Page<FaqArticle> faqArticles = faqArticleRepository.findByFaqCategoryId(id, pageable);
 		return faqArticles;
 	}
 
+	/**
+	 * @param id
+	 */
 	@Transactional
 	public void deleteFaqArticle(Long id) {
 		

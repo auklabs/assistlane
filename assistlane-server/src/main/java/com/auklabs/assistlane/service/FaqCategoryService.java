@@ -28,12 +28,21 @@ public class FaqCategoryService extends AbstractService<FaqCategory, Long>{
 		return faqCategoryRepository.findOne(id);
 	}
 	
+	/**
+	 * @param faqCategoryDTO
+	 * @return FaqCategory
+	 */
 	@Transactional
 	public FaqCategory createFaqCategory(FaqCategoryDTO faqCategoryDTO){
 		FaqCategory faqCategory = dtoToDomainConverstionService.convertFAQCategory(faqCategoryDTO);
 		return faqCategoryRepository.save(faqCategory);
 	}
 	
+	/**
+	 * @param id
+	 * @param faqCategoryDTO
+	 * @return FaqCategory
+	 */
 	@Transactional
 	public FaqCategory updateFaqCategory(Long id, FaqCategoryDTO faqCategoryDTO) {
 		FaqCategory category = faqCategoryRepository.findOne(id);
@@ -51,10 +60,17 @@ public class FaqCategoryService extends AbstractService<FaqCategory, Long>{
 		return category;
 	}
 	
+	/**
+	 * @param pageable
+	 * @return Page<FaqCategory>
+	 */
 	public Page<FaqCategory> getAllFaqCategory(Pageable pageable){
 		return faqCategoryRepository.findAll(pageable);
 	}
 	
+	/**
+	 * @param id
+	 */
 	@Transactional
 	public void deleteFaqCategory(Long id){
 		FaqCategory faqCategory = getById(id);

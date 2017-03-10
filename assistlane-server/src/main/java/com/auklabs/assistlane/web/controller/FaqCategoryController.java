@@ -35,6 +35,10 @@ public class FaqCategoryController {
 	@Autowired
 	private PagedResourcesAssembler<FaqCategory> pagedResourcesAssembler;
 
+	/**
+	 * @param pageable
+	 * @return All FaqCategory
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<PagedResources> getAllFaqCategory(Pageable pageable) {
@@ -51,6 +55,10 @@ public class FaqCategoryController {
 		return new ResponseEntity<PagedResources>(adminPagedResources, HttpStatus.OK);
 	}
 	
+	/**
+	 * @param id
+	 * @return FaqCategoryResource
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<FaqCategoryResource> getFaqCategory(@PathVariable Long id){
 		FaqCategory faqCategory = faqCategoryService.getById(id);
@@ -58,6 +66,10 @@ public class FaqCategoryController {
 		return  new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.OK);
 	}
 	
+	/**
+	 * @param faqCategoryDTO
+	 * @return FaqCategoryResource
+	 */
 	@RequestMapping( method = RequestMethod.POST)
 	public ResponseEntity<FaqCategoryResource> saveFaqCategory(@RequestBody FaqCategoryDTO faqCategoryDTO){
 		FaqCategory faqCategory = faqCategoryService.createFaqCategory(faqCategoryDTO);
@@ -65,6 +77,11 @@ public class FaqCategoryController {
 		return  new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.CREATED);
 	}
 	
+	/**
+	 * @param id
+	 * @param faqCategoryDTO
+	 * @return FaqCategoryResource
+	 */
 	@RequestMapping( value = "/{id}",method = RequestMethod.PUT)
 	public ResponseEntity<FaqCategoryResource> updateFaqCategory(@PathVariable Long id ,@RequestBody FaqCategoryDTO faqCategoryDTO){
 		FaqCategory faqCategory = faqCategoryService.updateFaqCategory(id, faqCategoryDTO);
@@ -72,6 +89,10 @@ public class FaqCategoryController {
 		return  new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.OK);
 	}
 	
+	/**
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/{id}" , method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteFaqCategory(@PathVariable Long id){
 		faqCategoryService.deleteFaqCategory(id);
