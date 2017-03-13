@@ -1,11 +1,14 @@
 package com.auklabs.assistlane.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.auklabs.assistlane.domain.FaqArticle;
@@ -195,5 +198,46 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 	public void deleteAllFaqArticle() {
 		faqArticleRepository.deleteAll();
 	}
-
+	
+	public Page<FaqArticle> getOnlyFaqArticle(){
+		
+		List<FaqArticle> faqArticles = faqArticleRepository.findAll();
+		List<FaqArticle> articles = new ArrayList<FaqArticle>();
+		for(FaqArticle article : faqArticles){
+			FaqArticle fqarticle = new FaqArticle();
+			fqarticle.setCreationDate(article.getCreationDate());
+			fqarticle.setId(article.getId());
+			fqarticle.setModificationDate(article.getModificationDate());
+			fqarticle.setBody(article.getBody());
+			fqarticle.setKeywords(article.getKeywords());
+			fqarticle.setPublish(article.getPublish());
+			fqarticle.setTitle(article.getTitle());
+			fqarticle.setFaqCategory(article.getFaqCategory());
+            articles.add(fqarticle);
+		}
+		Page<FaqArticle> page = new PageImpl<FaqArticle>(articles, new PageRequest(0, 10, null), articles.size());
+		return page;
+	}
+	
+	public FaqArticle getOnlyFaqArticle(Long id,Boolean isAll){
+		
+		FaqArticle faqArticle = getById(id);
+		int faqRelatedAtricleSize = faqArticle.getFaqRelatedArticles().size();
+		
+		FaqArticle article = new FaqArticle();
+		article.setBody(faqArticle.getBody());
+		article.setTitle(faqArticle.getTitle());
+		article.setPublish(faqArticle.getPublish());
+		article.setKeywords(faqArticle.getKeywords());
+		article.setModificationDate(faqArticle.getModificationDate());
+		article.setCreationDate(faqArticle.getCreationDate());
+		article.setId(faqArticle.getId());
+		article.setRelatedArticleCount(String.valueOf(faqRelatedAtricleSize));
+		article.setFaqCategory(faqArticle.getFaqCategory());
+		
+		if(isAll){
+			article.setFaqRelatedArticles(faqArticle.getFaqRelatedArticles());
+		}
+		return article;
+	}
 }

@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import org.hibernate.envers.Audited;
 import org.springframework.data.rest.core.annotation.RestResource;
 import com.auklabs.assistlane.repository.event.AbstractEntityListener;
@@ -37,6 +38,9 @@ public class FaqArticle extends AbstractEntity {
 	private String body;
 	
 	private String title;
+	
+	@Transient
+	private String relatedArticleCount;
 
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "keyword", joinColumns = { @JoinColumn(name = "id") })

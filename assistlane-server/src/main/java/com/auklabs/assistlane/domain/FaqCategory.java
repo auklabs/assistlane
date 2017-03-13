@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import org.hibernate.envers.Audited;
 import org.springframework.data.rest.core.annotation.RestResource;
 import com.auklabs.assistlane.repository.event.AbstractEntityListener;
@@ -30,6 +31,9 @@ public class FaqCategory extends AbstractEntity {
 	
 	@Column(name = "display_name")
 	private String displayName;
+	
+	@Transient
+	private String articleCount;
 
 	private String summary;
 

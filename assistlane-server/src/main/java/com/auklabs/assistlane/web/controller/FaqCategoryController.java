@@ -25,7 +25,7 @@ import com.auklabs.assistlane.service.FaqCategoryService;
 @RestController
 @RequestMapping(value = "faqCategories")
 public class FaqCategoryController {
-	
+
 	@Autowired
 	private FaqCategoryService faqCategoryService;
 
@@ -36,6 +36,7 @@ public class FaqCategoryController {
 	private PagedResourcesAssembler<FaqCategory> pagedResourcesAssembler;
 
 	/**
+	 * with this Get All Category Data as well as Article Data
 	 * @param pageable
 	 * @return All FaqCategory
 	 */
@@ -54,54 +55,87 @@ public class FaqCategoryController {
 		}
 		return new ResponseEntity<PagedResources>(adminPagedResources, HttpStatus.OK);
 	}
-	
+
 	/**
+	 * With this Api get Both the Category data and Article Data
 	 * @param id
 	 * @return FaqCategoryResource
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<FaqCategoryResource> getFaqCategory(@PathVariable Long id){
-		FaqCategory faqCategory = faqCategoryService.getById(id);
+	public ResponseEntity<FaqCategoryResource> getFaqCategory(@PathVariable Long id) {
+		FaqCategory faqCategory = faqCategoryService.getOnlyFaqCategory(id, true);
 		FaqCategoryResource rsource = faqResourseAssembler.toResource(faqCategory);
-		return  new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.OK);
+		return new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * @param faqCategoryDTO
 	 * @return FaqCategoryResource
 	 */
-	@RequestMapping( method = RequestMethod.POST)
-	public ResponseEntity<FaqCategoryResource> saveFaqCategory(@RequestBody FaqCategoryDTO faqCategoryDTO){
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<FaqCategoryResource> saveFaqCategory(@RequestBody FaqCategoryDTO faqCategoryDTO) {
 		FaqCategory faqCategory = faqCategoryService.createFaqCategory(faqCategoryDTO);
 		FaqCategoryResource rsource = faqResourseAssembler.toResource(faqCategory);
-		return  new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.CREATED);
+		return new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.CREATED);
 	}
-	
+
 	/**
 	 * @param id
 	 * @param faqCategoryDTO
 	 * @return FaqCategoryResource
 	 */
-	@RequestMapping( value = "/{id}",method = RequestMethod.PUT)
-	public ResponseEntity<FaqCategoryResource> updateFaqCategory(@PathVariable Long id ,@RequestBody FaqCategoryDTO faqCategoryDTO){
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<FaqCategoryResource> updateFaqCategory(@PathVariable Long id,
+			@RequestBody FaqCategoryDTO faqCategoryDTO) {
 		FaqCategory faqCategory = faqCategoryService.updateFaqCategory(id, faqCategoryDTO);
 		FaqCategoryResource rsource = faqResourseAssembler.toResource(faqCategory);
-		return  new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.OK);
+		return new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "/{id}" , method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteFaqCategory(@PathVariable Long id){
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteFaqCategory(@PathVariable Long id) {
 		faqCategoryService.deleteFaqCategory(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteAllFaqCategory(){
+	public ResponseEntity<Void> deleteAllFaqCategory() {
 		faqCategoryService.deleteAllFaqCategory();
 		return ResponseEntity.noContent().build();
+	}
+
+	/**
+	 * with this Get All Category Data without Article Data
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/get", method = RequestMethod.GET)
+	public ResponseEntity<PagedResources> getAllOnlyFaqCategory() {
+		Page<FaqCategory> faqCategoryPage = faqCategoryService.getAllOnlyFaqCategory();
+		PagedResources adminPagedResources = pagedResourcesAssembler.toResource(faqCategoryPage, faqResourseAssembler);
+		if (faqCategoryPage.getContent() == null || faqCategoryPage.getContent().isEmpty()) {
+			EmbeddedWrappers wrappers = new EmbeddedWrappers(false);
+			EmbeddedWrapper wrapper = wrappers.emptyCollectionOf(FaqCategory.class);
+			List<EmbeddedWrapper> embedded = Collections.singletonList(wrapper);
+			adminPagedResources = new PagedResources(embedded, adminPagedResources.getMetadata(),
+					adminPagedResources.getLinks());
+		}
+		return new ResponseEntity<PagedResources>(adminPagedResources, HttpStatus.OK);
+	}
+	
+	/**
+	 * With this Api get Only the Category data not Article Data
+	 * @param id
+	 * @return FaqCategoryResource
+	 */
+	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+	public ResponseEntity<FaqCategoryResource> getOnlyFaqCategory(@PathVariable Long id) {
+		FaqCategory faqCategory = faqCategoryService.getOnlyFaqCategory(id,false);
+		FaqCategoryResource rsource = faqResourseAssembler.toResource(faqCategory);
+		return new ResponseEntity<FaqCategoryResource>(rsource, HttpStatus.OK);
 	}
 }

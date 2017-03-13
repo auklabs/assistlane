@@ -38,6 +38,7 @@ public class FaqArticleController {
 	private PagedResourcesAssembler<FaqArticle> pagedResourcesAssembler;
 
 	/**
+	 * With this Get All Aricle Data with Related Article Data
 	 * @param pageable
 	 * @return all Article
 	 */
@@ -57,12 +58,13 @@ public class FaqArticleController {
 	}
 
 	/**
+	 * With This Get Article Data with Related Article Data
 	 * @param id
 	 * @return FaqArticleResource
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<FaqArticleResource> getFaqArticle(@PathVariable Long id) {
-		FaqArticle faqArticle = faqArticleService.getById(id);
+		FaqArticle faqArticle = faqArticleService.getOnlyFaqArticle(id, true);
 		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
 		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
 	}
@@ -152,4 +154,36 @@ public class FaqArticleController {
 		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
 		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
 	}
+	
+	/**
+	 * with this Get All Article Data Without Related Article Data
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/get",method = RequestMethod.GET)
+	public ResponseEntity<PagedResources> getAllOnlyFaqArticle() {
+		Page<FaqArticle> faqArticlePage = faqArticleService.getOnlyFaqArticle();
+		PagedResources pagedResources = pagedResourcesAssembler.toResource(faqArticlePage, faqArticleResourseAssembler);
+
+		if (faqArticlePage.getContent() == null || faqArticlePage.getContent().isEmpty()) {
+			EmbeddedWrappers wrappers = new EmbeddedWrappers(false);
+			EmbeddedWrapper wrapper = wrappers.emptyCollectionOf(FaqCategory.class);
+			List<EmbeddedWrapper> embedded = Collections.singletonList(wrapper);
+			pagedResources = new PagedResources(embedded, pagedResources.getMetadata(), pagedResources.getLinks());
+		}
+		return new ResponseEntity<PagedResources>(pagedResources, HttpStatus.OK);
+	}
+	
+	/**
+	 * with this Get Article Data Without Related Article Data
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+	public ResponseEntity<FaqArticleResource> getOnlyFaqArticle(@PathVariable Long id) {
+		FaqArticle faqArticle = faqArticleService.getOnlyFaqArticle(id,false);
+		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+	}
+	
 }
