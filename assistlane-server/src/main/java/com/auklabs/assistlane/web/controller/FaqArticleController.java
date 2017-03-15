@@ -68,6 +68,18 @@ public class FaqArticleController {
 		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
 		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
 	}
+	
+	/**
+	 * With This Get Article Data with Related Article Data
+	 * @param articleId
+	 * @return
+	 */
+	@RequestMapping(value = "/article/{articleId}", method = RequestMethod.GET)
+	public ResponseEntity<FaqArticleResource> getFaqArticle(@PathVariable String articleId) {
+		FaqArticle faqArticle = faqArticleService.getOnlyFaqArticle(articleId, true);
+		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+	}
 
 	/**
 	 * @param id
@@ -88,69 +100,48 @@ public class FaqArticleController {
 		}
 		return new ResponseEntity<PagedResources>(pagedResources, HttpStatus.OK);
 	}
-
-	/**
-	 * @param faqArticleDTO
-	 * @return FaqArticleResource
-	 */
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<FaqArticleResource> saveFaqArticle(@RequestBody FaqArticleDTO faqArticleDTO) {
-		FaqArticle faqArticle = faqArticleService.createFaqArticle(faqArticleDTO);
-		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
-		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.CREATED);
-	}
-
 	
-	@RequestMapping(method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteAllFaqArticle() {
-		faqArticleService.deleteAllFaqArticle();
-		return ResponseEntity.noContent().build();
-	}
-
+	
 	/**
+	 * @param categoryId
+	 * @param pageable
+	 * @return All FaqArticle In A FaqCategory
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/faqCategorys/cateory/{categoryId}", method = RequestMethod.GET)
+	public ResponseEntity<PagedResources> getAllFaqArticleInCategory(@PathVariable String categoryId,
+			@PageableDefault Pageable pageable) {
+		Page<FaqArticle> faqArticlePage = faqArticleService.getAllArticleInCategory(categoryId, pageable);
+		PagedResources pagedResources = pagedResourcesAssembler.toResource(faqArticlePage, faqArticleResourseAssembler);
+		if (faqArticlePage.getContent() == null || faqArticlePage.getContent().isEmpty()) {
+			EmbeddedWrappers wrappers = new EmbeddedWrappers(false);
+			EmbeddedWrapper wrapper = wrappers.emptyCollectionOf(FaqCategory.class);
+			List<EmbeddedWrapper> embedded = Collections.singletonList(wrapper);
+			pagedResources = new PagedResources(embedded, pagedResources.getMetadata(), pagedResources.getLinks());
+		}
+		return new ResponseEntity<PagedResources>(pagedResources, HttpStatus.OK);
+	}
+	
+	/**
+	 * with this Get Article Data Without Related Article Data
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteFaqArticle(@PathVariable Long id) {
-		faqArticleService.deleteFaqArticle(id);
-		return ResponseEntity.noContent().build();
-	}
-
-	/**
-	 * @param id
-	 * @param faqArticleDTO
-	 * @return FaqArticleResource
-	 */
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<FaqArticleResource> updateFaqArticle(@PathVariable Long id,
-			@RequestBody FaqArticleDTO faqArticleDTO) {
-		FaqArticle faqArticle = faqArticleService.updateFaqArticle(id, faqArticleDTO);
+	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+	public ResponseEntity<FaqArticleResource> getOnlyFaqArticle(@PathVariable Long id) {
+		FaqArticle faqArticle = faqArticleService.getOnlyFaqArticle(id,false);
 		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
 		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
 	}
-
+	
 	/**
-	 * @param id1 is ParentArticle id
-	 * @param id2 is childArticle id
-	 * @return FaqArticleResource
+	 * with this Get Article Data Without Related Article Data
+	 * @param articleId
+	 * @return
 	 */
-	@RequestMapping(value = "/{id1}/{id2}", method = RequestMethod.PUT)
-	public ResponseEntity<FaqArticleResource> addRelatedArticle(@PathVariable Long id1, @PathVariable Long id2) {
-		FaqArticle faqArticle = faqArticleService.addRelatedArticle(id1, id2);
-		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
-		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
-	}
-
-	/**
-	 * @param id contain ArticleId
-	 * @param categoryid
-	 * @return FaqArticleResource
-	 */
-	@RequestMapping(value = "/add/{id}/{categoryid}", method = RequestMethod.PUT)
-	public ResponseEntity<FaqArticleResource> addArticleInCategory(@PathVariable Long id,
-			@PathVariable Long categoryid) {
-		FaqArticle faqArticle = faqArticleService.addArticleInCategory(id, categoryid);
+	@RequestMapping(value = "article/get/{articleId}", method = RequestMethod.GET)
+	public ResponseEntity<FaqArticleResource> getOnlyFaqArticle(@PathVariable String articleId) {
+		FaqArticle faqArticle = faqArticleService.getOnlyFaqArticle(articleId,false);
 		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
 		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
 	}
@@ -173,17 +164,119 @@ public class FaqArticleController {
 		}
 		return new ResponseEntity<PagedResources>(pagedResources, HttpStatus.OK);
 	}
+
+	/**
+	 * @param faqArticleDTO
+	 * @return FaqArticleResource
+	 */
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<FaqArticleResource> saveFaqArticle(@RequestBody FaqArticleDTO faqArticleDTO) {
+		FaqArticle faqArticle = faqArticleService.createFaqArticle(faqArticleDTO);
+		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.CREATED);
+	}
 	
 	/**
-	 * with this Get Article Data Without Related Article Data
 	 * @param id
-	 * @return
+	 * @param faqArticleDTO
+	 * @return FaqArticleResource
 	 */
-	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
-	public ResponseEntity<FaqArticleResource> getOnlyFaqArticle(@PathVariable Long id) {
-		FaqArticle faqArticle = faqArticleService.getOnlyFaqArticle(id,false);
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<FaqArticleResource> updateFaqArticle(@PathVariable Long id,
+			@RequestBody FaqArticleDTO faqArticleDTO) {
+		FaqArticle faqArticle = faqArticleService.updateFaqArticle(id, faqArticleDTO);
 		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
 		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
 	}
 	
+	/**
+	 * @param articleId
+	 * @param faqArticleDTO
+	 * @return FaqArticleResource
+	 */
+	@RequestMapping(value = "/article/{articleId}", method = RequestMethod.PUT)
+	public ResponseEntity<FaqArticleResource> updateFaqArticle(@PathVariable String articleId,
+			@RequestBody FaqArticleDTO faqArticleDTO) {
+		FaqArticle faqArticle = faqArticleService.updateFaqArticle(articleId, faqArticleDTO);
+		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+	}
+
+	/**
+	 * @param id1 is ParentArticle id
+	 * @param id2 is childArticle id
+	 * @return FaqArticleResource
+	 */
+	@RequestMapping(value = "/{id1}/{id2}", method = RequestMethod.PUT)
+	public ResponseEntity<FaqArticleResource> addRelatedArticle(@PathVariable Long id1, @PathVariable Long id2) {
+		FaqArticle faqArticle = faqArticleService.addRelatedArticle(id1, id2);
+		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+	}
+	
+	/**
+	 * @param articleId1 is ParentArticleid
+	 * @param articleId2 is childArticleid
+	 * @return FaqArticleResource
+	 */
+	@RequestMapping(value = "/article/{articleId1}/{articleId2}", method = RequestMethod.PUT)
+	public ResponseEntity<FaqArticleResource> addRelatedArticle(@PathVariable String articleId1, @PathVariable String articleId2) {
+		FaqArticle faqArticle = faqArticleService.addRelatedArticle(articleId1, articleId2);
+		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+	}
+
+	/**
+	 * @param id contain ArticleId
+	 * @param categoryid
+	 * @return FaqArticleResource
+	 */
+	@RequestMapping(value = "/add/{id}/{categoryid}", method = RequestMethod.PUT)
+	public ResponseEntity<FaqArticleResource> addArticleInCategory(@PathVariable Long id,
+			@PathVariable Long categoryid) {
+		FaqArticle faqArticle = faqArticleService.addArticleInCategory(id, categoryid);
+		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+	}
+	
+	/**
+	 * @param articleId
+	 * @param categoryId
+	 * @return FaqArticleResource
+	 */
+	@RequestMapping(value = "/add/article/{articleId}/{categoryId}", method = RequestMethod.PUT)
+	public ResponseEntity<FaqArticleResource> addArticleInCategory(@PathVariable String articleId,
+			@PathVariable String categoryId) {
+		FaqArticle faqArticle = faqArticleService.addArticleInCategory(articleId, categoryId);
+		FaqArticleResource rsource = faqArticleResourseAssembler.toResource(faqArticle);
+		return new ResponseEntity<FaqArticleResource>(rsource, HttpStatus.OK);
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteAllFaqArticle() {
+		faqArticleService.deleteAllFaqArticle();
+		return ResponseEntity.noContent().build();
+	}
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteFaqArticle(@PathVariable Long id) {
+		faqArticleService.deleteFaqArticle(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	/**
+	 * @param articleId
+	 * @return
+	 */
+	@RequestMapping(value = "/article/{articleId}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteFaqArticle(@PathVariable String articleId) {
+		faqArticleService.deleteFaqArticle(articleId);
+		return ResponseEntity.noContent().build();
+	}
+
+
 }

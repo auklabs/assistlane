@@ -37,6 +37,10 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 	public FaqArticle getById(Long id) {
 		return faqArticleRepository.findOne(id);
 	}
+	
+	public FaqArticle getByArticleId(String articleId){
+		return faqArticleRepository.findByArticleId(articleId);
+	}
 
 	/**
 	 * @param faqArticleDTO
@@ -45,6 +49,12 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 	@Transactional
 	public FaqArticle createFaqArticle(FaqArticleDTO faqArticleDTO) {
 		FaqArticle faqArticle = dtoToDomainConverstionService.convertFaqArticle(faqArticleDTO);
+		String str[] = faqArticle.getTitle().split(" ");
+		String articleId ="";
+		for(String str1 : str){
+			articleId += str1+"_";
+		}
+		faqArticle.setArticleId(articleId);
 		return faqArticleRepository.save(faqArticle);
 	}
 	
@@ -62,8 +72,66 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 		else
 			updateFaqArticle.setBody(updateFaqArticle.getBody());
 
-		if (faqArticleDTO.getTitle() != null)
+		if (faqArticleDTO.getTitle() != null && !faqArticleDTO.getFaqRelatedArticles().isEmpty()){
 			updateFaqArticle.setTitle(faqArticleDTO.getTitle());
+			String str[] = faqArticleDTO.getTitle().split(" ");
+			String articlId ="";
+			for(String str1 : str){
+				articlId += str1+"_";
+			}
+			updateFaqArticle.setArticleId(articlId);
+		}
+			
+		else
+			updateFaqArticle.setTitle(updateFaqArticle.getTitle());
+
+		if (faqArticleDTO.getFaqRelatedArticles() != null && !faqArticleDTO.getFaqRelatedArticles().isEmpty()) {
+
+			Set<FaqArticle> faqArticles = new HashSet<FaqArticle>();
+			for (FaqArticleDTO faqArticleDTO2 : faqArticleDTO.getFaqRelatedArticles()) {
+
+				FaqArticle subfaqArticle = new FaqArticle();
+				subfaqArticle.setTitle(faqArticleDTO2.getTitle());
+				subfaqArticle.setBody(faqArticleDTO2.getBody());
+				subfaqArticle.setPublish(faqArticleDTO2.getPublish());
+				subfaqArticle.setKeywords(faqArticleDTO2.getKeywords());
+				faqArticles.add(subfaqArticle);
+			}
+			updateFaqArticle.setFaqRelatedArticles(faqArticles);
+		} else
+			updateFaqArticle.setFaqRelatedArticles(updateFaqArticle.getFaqRelatedArticles());
+
+		if (faqArticleDTO.getKeywords() != null && !faqArticleDTO.getKeywords().isEmpty())
+			updateFaqArticle.setKeywords(faqArticleDTO.getKeywords());
+		else
+			updateFaqArticle.setKeywords(updateFaqArticle.getKeywords());
+
+		updateFaqArticle.setPublish(faqArticleDTO.getPublish());
+		updateFaqArticle.setCreationDate(updateFaqArticle.getCreationDate());
+
+		return faqArticleRepository.save(updateFaqArticle);
+
+	}
+	
+	@Transactional
+	public FaqArticle updateFaqArticle(String articleId, FaqArticleDTO faqArticleDTO) {
+		FaqArticle updateFaqArticle = faqArticleRepository.findByArticleId(articleId);
+
+		if (faqArticleDTO.getBody() != null)
+			updateFaqArticle.setBody(faqArticleDTO.getBody());
+		else
+			updateFaqArticle.setBody(updateFaqArticle.getBody());
+
+		if (faqArticleDTO.getTitle() != null && !faqArticleDTO.getTitle().equals("")){
+			updateFaqArticle.setTitle(faqArticleDTO.getTitle());
+			String str[] = faqArticleDTO.getTitle().split(" ");
+			String articlId ="";
+			for(String str1 : str){
+				articlId += str1+"_";
+			}
+			updateFaqArticle.setArticleId(articlId);
+		}
+			
 		else
 			updateFaqArticle.setTitle(updateFaqArticle.getTitle());
 
@@ -110,6 +178,27 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 
 		updateFaqArticle.setBody(updateFaqArticle.getBody());
 		updateFaqArticle.setTitle(updateFaqArticle.getTitle());
+		updateFaqArticle.setArticleId(updateFaqArticle.getArticleId());
+		updateFaqArticle.setPublish(updateFaqArticle.getPublish());
+		updateFaqArticle.setKeywords(updateFaqArticle.getKeywords());
+		updateFaqArticle.setCreationDate(updateFaqArticle.getCreationDate());
+		updateFaqArticle.setFaqRelatedArticles(faqArticles);
+
+		return faqArticleRepository.save(updateFaqArticle);
+
+	}
+	
+	@Transactional
+	public FaqArticle addRelatedArticle(String articleId1, String articleId2) {
+		FaqArticle updateFaqArticle = faqArticleRepository.findByArticleId(articleId1);
+		FaqArticle toBeAddedArticle = faqArticleRepository.findByArticleId(articleId2);
+
+		Set<FaqArticle> faqArticles = new HashSet<FaqArticle>();
+		faqArticles.add(toBeAddedArticle);
+
+		updateFaqArticle.setBody(updateFaqArticle.getBody());
+		updateFaqArticle.setTitle(updateFaqArticle.getTitle());
+		updateFaqArticle.setArticleId(updateFaqArticle.getArticleId());
 		updateFaqArticle.setPublish(updateFaqArticle.getPublish());
 		updateFaqArticle.setKeywords(updateFaqArticle.getKeywords());
 		updateFaqArticle.setCreationDate(updateFaqArticle.getCreationDate());
@@ -131,6 +220,29 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 		FaqCategory category = faqCategoryRepository.findOne(categoryId);
 		updateFaqArticle.setBody(updateFaqArticle.getBody());
 		updateFaqArticle.setTitle(updateFaqArticle.getTitle());
+		updateFaqArticle.setPublish(updateFaqArticle.getPublish());
+		updateFaqArticle.setKeywords(updateFaqArticle.getKeywords());
+		updateFaqArticle.setCreationDate(updateFaqArticle.getCreationDate());
+		updateFaqArticle.setFaqRelatedArticles(updateFaqArticle.getFaqRelatedArticles());
+		updateFaqArticle.setFaqCategory(category);
+		
+		return faqArticleRepository.save(updateFaqArticle);
+		
+	}
+	
+	/**
+	 * @param artilceId
+	 * @param categoryId
+	 * @return
+	 */
+	@Transactional
+	public FaqArticle addArticleInCategory(String artilceId , String categoryId){
+		FaqArticle updateFaqArticle = faqArticleRepository.findByArticleId(artilceId);
+		
+		FaqCategory category = faqCategoryRepository.findByCategoryId(categoryId);
+		updateFaqArticle.setBody(updateFaqArticle.getBody());
+		updateFaqArticle.setTitle(updateFaqArticle.getTitle());
+		updateFaqArticle.setArticleId(updateFaqArticle.getArticleId());
 		updateFaqArticle.setPublish(updateFaqArticle.getPublish());
 		updateFaqArticle.setKeywords(updateFaqArticle.getKeywords());
 		updateFaqArticle.setCreationDate(updateFaqArticle.getCreationDate());
@@ -165,6 +277,11 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 		Page<FaqArticle> faqArticles = faqArticleRepository.findByFaqCategoryId(id, pageable);
 		return faqArticles;
 	}
+	
+	public Page<FaqArticle> getAllArticleInCategory(String categoryId,Pageable pageable) {
+		Page<FaqArticle> faqArticles = faqArticleRepository.findByFaqCategoryCategoryId(categoryId, pageable);
+		return faqArticles;
+	}
 
 	/**
 	 * @param id
@@ -191,6 +308,33 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 			faqArticleRepository.delete(id);
 		} else {
 			faqArticleRepository.delete(id);
+		}
+	}
+	
+	@Transactional
+	public void deleteFaqArticle(String articleId) {
+		
+		FaqArticle faqArticle = faqArticleRepository.findByFaqRelatedArticlesArticleId(articleId);
+		Set<FaqArticle> faqRelatedArticles = new HashSet<FaqArticle>();
+		if (faqArticle != null) {
+			for (FaqArticle faqArticle2 : faqArticle.getFaqRelatedArticles()) {
+				if (!faqArticle2.getArticleId().equals(articleId)) {
+					faqRelatedArticles.add(faqArticle2);
+				}
+			}
+			faqArticle.setBody(faqArticle.getBody());
+			faqArticle.setArticleId(faqArticle.getArticleId());
+			faqArticle.setKeywords(faqArticle.getKeywords());
+			faqArticle.setPublish(faqArticle.getPublish());
+			faqArticle.setTitle(faqArticle.getTitle());
+			faqArticle.setCreationDate(faqArticle.getCreationDate());
+			faqArticle.setFaqRelatedArticles(faqRelatedArticles);
+			faqArticle.setFaqCategory(faqArticle.getFaqCategory());
+			faqArticleRepository.save(faqArticle);
+			FaqArticle articletoBeDelete = faqArticleRepository.findByArticleId(articleId);
+			faqArticleRepository.delete(articletoBeDelete.getId());
+		} else {
+			faqArticleRepository.delete(faqArticleRepository.findByArticleId(articleId).getId());
 		}
 	}
 
@@ -229,6 +373,30 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 		article.setTitle(faqArticle.getTitle());
 		article.setPublish(faqArticle.getPublish());
 		article.setKeywords(faqArticle.getKeywords());
+		article.setArticleId(faqArticle.getArticleId());
+		article.setModificationDate(faqArticle.getModificationDate());
+		article.setCreationDate(faqArticle.getCreationDate());
+		article.setId(faqArticle.getId());
+		article.setRelatedArticleCount(String.valueOf(faqRelatedAtricleSize));
+		article.setFaqCategory(faqArticle.getFaqCategory());
+		
+		if(isAll){
+			article.setFaqRelatedArticles(faqArticle.getFaqRelatedArticles());
+		}
+		return article;
+	}
+	
+public FaqArticle getOnlyFaqArticle(String articleId,Boolean isAll){
+		
+		FaqArticle faqArticle = faqArticleRepository.findByArticleId(articleId);
+		int faqRelatedAtricleSize = faqArticle.getFaqRelatedArticles().size();
+		
+		FaqArticle article = new FaqArticle();
+		article.setBody(faqArticle.getBody());
+		article.setTitle(faqArticle.getTitle());
+		article.setPublish(faqArticle.getPublish());
+		article.setKeywords(faqArticle.getKeywords());
+		article.setArticleId(faqArticle.getArticleId());
 		article.setModificationDate(faqArticle.getModificationDate());
 		article.setCreationDate(faqArticle.getCreationDate());
 		article.setId(faqArticle.getId());

@@ -32,6 +32,9 @@ public class FaqCategory extends AbstractEntity {
 	@Column(name = "display_name")
 	private String displayName;
 	
+	@Column(unique= true)
+	private String categoryId;
+	
 	@Transient
 	private String articleCount;
 

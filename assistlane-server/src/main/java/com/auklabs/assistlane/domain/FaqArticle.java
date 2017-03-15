@@ -37,6 +37,9 @@ public class FaqArticle extends AbstractEntity {
 
 	private String body;
 	
+	@Column(unique= true)
+	private String articleId;
+	
 	private String title;
 	
 	@Transient

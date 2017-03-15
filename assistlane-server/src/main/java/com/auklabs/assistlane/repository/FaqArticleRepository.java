@@ -9,5 +9,11 @@ public interface FaqArticleRepository extends JpaRepository<FaqArticle, Long> {
 
 	Page<FaqArticle> findByFaqCategoryId(Long id,Pageable pageable);
 	
+	Page<FaqArticle> findByFaqCategoryCategoryId(String categoryId,Pageable pageable);
+	
 	FaqArticle findByFaqRelatedArticlesId(Long id);
+	
+	FaqArticle findByFaqRelatedArticlesArticleId(String articleId);
+	
+	FaqArticle findByArticleId(String articleId);
 }
