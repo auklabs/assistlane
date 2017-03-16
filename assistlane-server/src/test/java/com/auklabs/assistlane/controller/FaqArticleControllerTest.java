@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import com.auklabs.assistlane.AssistlaneAppApplicationTests;
@@ -22,9 +22,11 @@ import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 
 public class FaqArticleControllerTest extends AssistlaneAppApplicationTests {
 
-	@Before
+	@After
 	public void cleanUp() {
+		faqCategoryRepository.deleteAll();
 		faqArticleRepository.deleteAll();
+		
 	}
 
 	@Test
@@ -250,8 +252,8 @@ public class FaqArticleControllerTest extends AssistlaneAppApplicationTests {
 		keywords2.add("Java2");
 		keywords2.add("login2");
 		faqArticleDTO2.setKeywords(keywords2);
-		Set<FaqArticleDTO> faqArticleDTOs2 = new HashSet<FaqArticleDTO>();
-		faqArticleDTO2.setFaqRelatedArticles(faqArticleDTOs2);
+
+		FaqArticle article2 = faqArticleService.createFaqArticle(faqArticleDTO2);
 
 		FaqArticleDTO faqArticleDTO3 = new FaqArticleDTO();
 		faqArticleDTO3.setBody("Article3");
@@ -261,8 +263,8 @@ public class FaqArticleControllerTest extends AssistlaneAppApplicationTests {
 		keywords3.add("Java3");
 		keywords3.add("login3");
 		faqArticleDTO3.setKeywords(keywords3);
-		Set<FaqArticleDTO> faqArticleDTOs3 = new HashSet<FaqArticleDTO>();
-		faqArticleDTO3.setFaqRelatedArticles(faqArticleDTOs3);
+
+		FaqArticle article3 = faqArticleService.createFaqArticle(faqArticleDTO3);
 
 		FaqArticleDTO faqArticleDTO1 = new FaqArticleDTO();
 		faqArticleDTO1.setBody("Article1");
@@ -273,21 +275,15 @@ public class FaqArticleControllerTest extends AssistlaneAppApplicationTests {
 		keywords1.add("login1");
 		faqArticleDTO1.setKeywords(keywords1);
 
-		Set<FaqArticleDTO> faqArticleDTOs1 = new HashSet<FaqArticleDTO>();
-		faqArticleDTOs1.add(faqArticleDTO2);
-		faqArticleDTOs1.add(faqArticleDTO3);
-		faqArticleDTO1.setFaqRelatedArticles(faqArticleDTOs1);
+		FaqArticle article1 = faqArticleService.createFaqArticle(faqArticleDTO1);
 
-		Set<FaqArticleDTO> faqArticleDTOs = new HashSet<FaqArticleDTO>();
-		faqArticleDTOs.add(faqArticleDTO1);
-
-		FaqCategoryDTO faqCategoryDTO = new FaqCategoryDTO();
-		faqCategoryDTO.setDisplayName("Sales");
-		faqCategoryDTO.setSummary("It belongs To Sales Department");
-		faqCategoryDTO.setFaqArticleDTO(faqArticleDTOs);
-
-		faqCategoryService.createFaqCategory(faqCategoryDTO);
-		Long id = 2L;
+		Set<FaqArticle> faqArticles = new HashSet<FaqArticle>();
+		faqArticles.add(article3);
+		faqArticles.add(article2);
+		article1.setFaqRelatedArticles(faqArticles);
+		faqArticleService.save(article1);
+		Long id = article3.getId();
+		
 		mockMvc.perform(delete("/faqArticles/{id}", id)).andExpect(status().isNoContent()).andDo(print());
 
 	}

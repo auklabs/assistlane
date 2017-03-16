@@ -24,6 +24,7 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 	@After
 	public void cleanup() {
 		faqCategoryRepository.deleteAll();
+		faqArticleRepository.deleteAll();
 	}
 
 	@Test
@@ -288,7 +289,6 @@ public class FaqCategoryControllerTest extends AssistlaneAppApplicationTests {
 		faqCategoryDTO.setSummary("It belongs To Sales Department");
 		faqCategoryDTO.setFaqArticleDTO(faqArticleDTOs);
 
-		faqCategoryService.createFaqCategory(faqCategoryDTO);
 		faqCategoryService.createFaqCategory(faqCategoryDTO);
 
 		mockMvc.perform(delete("/faqCategories")).andExpect(status().isNoContent()).andDo(print());
