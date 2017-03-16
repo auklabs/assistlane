@@ -123,6 +123,7 @@ public class FaqCategoryService extends AbstractService<FaqCategory, Long> {
 			faqCategorie.setCreationDate(category.getCreationDate());
 			faqCategorie.setModificationDate(category.getModificationDate());
 			faqCategorie.setId(category.getId());
+			faqCategorie.setCategoryId(category.getCategoryId());
 			faqCategorie.setDisplayName(category.getDisplayName());
 			faqCategorie.setSummary(category.getSummary());
 			newfaqCategories.add(faqCategorie);
@@ -142,6 +143,7 @@ public class FaqCategoryService extends AbstractService<FaqCategory, Long> {
 		onlyCategory.setDisplayName(category.getDisplayName());
 		onlyCategory.setSummary(category.getSummary());
 		onlyCategory.setId(category.getId());
+		onlyCategory.setCategoryId(category.getCategoryId());
 		onlyCategory.setArticleCount(String.valueOf(size));
 		if (isAll) {
 			onlyCategory.setFaqArticle(category.getFaqArticle());

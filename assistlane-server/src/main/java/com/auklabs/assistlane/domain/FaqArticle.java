@@ -43,7 +43,7 @@ public class FaqArticle extends AbstractEntity {
 	private String title;
 	
 	@Transient
-	private String relatedArticleCount;
+	private String relatedArticleCount = "0";
 
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "keyword", joinColumns = { @JoinColumn(name = "id") })

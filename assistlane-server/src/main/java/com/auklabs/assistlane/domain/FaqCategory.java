@@ -36,7 +36,7 @@ public class FaqCategory extends AbstractEntity {
 	private String categoryId;
 	
 	@Transient
-	private String articleCount;
+	private String articleCount = "0";
 
 	private String summary;
 
