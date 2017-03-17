@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.core.EmbeddedWrapper;
@@ -43,7 +44,7 @@ public class FaqCategoryController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<PagedResources> getAllFaqCategory(Pageable pageable) {
+	public ResponseEntity<PagedResources> getAllFaqCategory(@PageableDefault Pageable pageable) {
 		Page<FaqCategory> faqCategoryPage = faqCategoryService.getAllFaqCategory(pageable);
 		PagedResources adminPagedResources = pagedResourcesAssembler.toResource(faqCategoryPage, faqResourseAssembler);
 
