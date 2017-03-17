@@ -258,7 +258,33 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 	 * @return Page<FaqArticle>
 	 */
 	public Page<FaqArticle> getAllFaqArticle(Pageable pageable) {
-		return faqArticleRepository.findAll(pageable);
+		 
+		Page<FaqArticle> pages = faqArticleRepository.findAll(pageable);
+		List<FaqArticle> articles = new ArrayList<FaqArticle>();
+		for(FaqArticle article : pages.getContent()){
+			FaqArticle fqarticle = new FaqArticle();
+			fqarticle.setCreationDate(article.getCreationDate());
+			fqarticle.setId(article.getId());
+			fqarticle.setModificationDate(article.getModificationDate());
+			fqarticle.setArticleId(article.getArticleId());
+			fqarticle.setBody(article.getBody());
+			fqarticle.setKeywords(article.getKeywords());
+			fqarticle.setPublish(article.getPublish());
+			fqarticle.setTitle(article.getTitle());
+			fqarticle.setRelatedArticleCount(String.valueOf(article.getFaqRelatedArticles().size()));
+			Set<FaqArticle> relatedArticles = new HashSet<FaqArticle>();
+			for(FaqArticle artilce : article.getFaqRelatedArticles()){
+				artilce.setRelatedArticleCount(String.valueOf(artilce.getFaqRelatedArticles().size()));
+				relatedArticles.add(artilce);
+			}
+			fqarticle.setFaqRelatedArticles(relatedArticles);
+			fqarticle.setFaqCategory(article.getFaqCategory());
+            articles.add(fqarticle);
+		}
+		Page<FaqArticle> page = new PageImpl<FaqArticle>(articles, new PageRequest(0, 10, null), articles.size());
+		return page;
+		
+		
 	}
 	
 	/**
@@ -356,6 +382,8 @@ public class FaqArticleService extends AbstractService<FaqArticle, Long> {
 			fqarticle.setKeywords(article.getKeywords());
 			fqarticle.setPublish(article.getPublish());
 			fqarticle.setTitle(article.getTitle());
+			fqarticle.setArticleId(article.getArticleId());
+			fqarticle.setRelatedArticleCount(String.valueOf(article.getFaqRelatedArticles().size()));
 			fqarticle.setFaqCategory(article.getFaqCategory());
             articles.add(fqarticle);
 		}

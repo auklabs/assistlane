@@ -44,7 +44,7 @@ public class FaqArticleController {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<PagedResources> getAllFaqArticle(Pageable pageable) {
+	public ResponseEntity<PagedResources> getAllFaqArticle(@PageableDefault Pageable pageable) {
 		Page<FaqArticle> faqArticlePage = faqArticleService.getAllFaqArticle(pageable);
 		PagedResources pagedResources = pagedResourcesAssembler.toResource(faqArticlePage, faqArticleResourseAssembler);
 
