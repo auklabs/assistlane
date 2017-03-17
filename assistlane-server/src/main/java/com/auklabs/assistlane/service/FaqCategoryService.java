@@ -111,7 +111,31 @@ public class FaqCategoryService extends AbstractService<FaqCategory, Long> {
 	 * @return Page<FaqCategory>
 	 */
 	public Page<FaqCategory> getAllFaqCategory(Pageable pageable) {
-		return faqCategoryRepository.findAll(pageable);
+		Page<FaqCategory> pages = faqCategoryRepository.findAll(pageable);
+		List<FaqCategory> faqCategories = pages.getContent();
+		List<FaqCategory> newfaqCategories = new ArrayList<FaqCategory>();
+		for(FaqCategory category : faqCategories){
+			int size = category.getFaqArticle().size();
+			FaqCategory faqCategorie = new FaqCategory();
+			faqCategorie.setCreationDate(category.getCreationDate());
+			faqCategorie.setModificationDate(category.getModificationDate());
+			faqCategorie.setId(category.getId());
+			faqCategorie.setCategoryId(category.getCategoryId());
+			faqCategorie.setDisplayName(category.getDisplayName());
+			faqCategorie.setSummary(category.getSummary());
+			Set<FaqArticle> faqArticles  = new HashSet<FaqArticle>();
+			for(FaqArticle article : category.getFaqArticle()){
+				article.setRelatedArticleCount(String.valueOf(article.getFaqRelatedArticles().size()));
+				faqArticles.add(article);
+			}
+			faqCategorie.setFaqArticle(faqArticles);
+			faqCategorie.setArticleCount(String.valueOf(size));
+			newfaqCategories.add(faqCategorie);
+		}
+		
+		Page<FaqCategory> page = new PageImpl<FaqCategory>(newfaqCategories, new PageRequest(0, 20, null),
+				newfaqCategories.size());
+		return page;
 	}
 
 	public Page<FaqCategory> getAllOnlyFaqCategory() {
@@ -125,10 +149,11 @@ public class FaqCategoryService extends AbstractService<FaqCategory, Long> {
 			faqCategorie.setId(category.getId());
 			faqCategorie.setCategoryId(category.getCategoryId());
 			faqCategorie.setDisplayName(category.getDisplayName());
+			faqCategorie.setArticleCount(String.valueOf(category.getFaqArticle().size()));
 			faqCategorie.setSummary(category.getSummary());
 			newfaqCategories.add(faqCategorie);
 		}
-		Page<FaqCategory> page = new PageImpl<FaqCategory>(newfaqCategories, new PageRequest(0, 10, null),
+		Page<FaqCategory> page = new PageImpl<FaqCategory>(newfaqCategories, new PageRequest(0, 20, null),
 				newfaqCategories.size());
 		return page;
 	}
